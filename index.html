@@ -1,0 +1,3376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#432D1E">
+  <title>Công thức pha chế - Mè Coffee</title>
+
+  <!-- Google Fonts (Dự phòng font hệ thống nếu mất mạng / offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+  <style>
+    /* =========================================================================
+       1. HỆ THỐNG BIẾN CSS (DESIGN TOKENS - MÈ COFFEE BARISTA THEME)
+       ========================================================================= */
+    :root {
+      /* Bảng màu thương hiệu Mè Coffee */
+      --color-cream-50: #FDFBF7;
+      --color-cream-100: #F7F2EA;
+      --color-cream-200: #EFE5D5;
+      --color-cream-300: #E2D1B8;
+
+      --color-coffee-500: #8B6548;
+      --color-coffee-600: #6F4E37;
+      --color-coffee-700: #5A3E2B;
+      --color-coffee-800: #432D1E;
+      --color-coffee-900: #2C1D13;
+
+      --color-caramel-500: #C87D32;
+      --color-caramel-600: #B06822;
+
+      --color-matcha-100: #E8F0E5;
+      --color-matcha-600: #4A6B3E;
+      --color-matcha-700: #39542F;
+
+      --color-white: #FFFFFF;
+      --color-danger-bg: #FEF2F2;
+      --color-danger-text: #B91C1C;
+      --color-danger-border: #FECACA;
+      --color-amber-50: #FFFBEB;
+      --color-amber-200: #FDE68A;
+      --color-amber-800: #92400E;
+      --color-amber-950: #451A03;
+      --color-gold: #D97706;
+
+      /* Typography */
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+      /* Spacing & Layout */
+      --container-max: 1320px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+
+      /* Shadows */
+      --shadow-xs: 0 1px 2px rgba(44, 29, 19, 0.05);
+      --shadow-sm: 0 2px 6px rgba(44, 29, 19, 0.07);
+      --shadow-md: 0 8px 20px -4px rgba(44, 29, 19, 0.12);
+      --shadow-modal: 0 24px 48px -12px rgba(44, 29, 19, 0.35);
+
+      /* Transitions */
+      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-smooth: 220ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* =========================================================================
+       2. RESET & BASE STYLES
+       ========================================================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-cream-50);
+      color: var(--color-coffee-900);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background-color: var(--color-caramel-500);
+      color: var(--color-white);
+    }
+
+    button, input {
+      font-family: inherit;
+      color: inherit;
+    }
+
+    button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      touch-action: manipulation;
+      user-select: none;
+    }
+
+    /* Trạng thái Focus rõ ràng hỗ trợ bàn phím & POS */
+    button:focus-visible, input:focus-visible, [tabindex]:focus-visible {
+      outline: 3px solid var(--color-caramel-500);
+      outline-offset: 2px;
+    }
+
+    .icon {
+      width: 1.15em;
+      height: 1.15em;
+      display: inline-block;
+      vertical-align: -0.18em;
+      flex-shrink: 0;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.1;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .icon-filled {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    /* =========================================================================
+       3. HEADER & THANH CÔNG CỤ QUẦY PHA CHẾ
+       ========================================================================= */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background-color: rgba(253, 251, 247, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--color-cream-200);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .header-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 14px 16px 12px;
+    }
+
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background-color: var(--color-coffee-800);
+      color: var(--color-caramel-500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-sm);
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--color-coffee-900);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-subtitle {
+      font-size: 0.8rem;
+      color: var(--color-coffee-600);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stat-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 40px;
+      padding: 0 12px;
+      border-radius: var(--radius-md);
+      background-color: var(--color-cream-200);
+      color: var(--color-coffee-800);
+      font-size: 0.8125rem;
+      font-weight: 700;
+    }
+
+    .btn-action-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-fav-filter {
+      background-color: var(--color-white);
+      color: var(--color-coffee-800);
+      border: 1.5px solid var(--color-cream-300);
+    }
+
+    .btn-fav-filter:hover {
+      background-color: var(--color-cream-100);
+    }
+
+    .btn-fav-filter.is-active {
+      background-color: var(--color-amber-50);
+      color: var(--color-amber-800);
+      border-color: var(--color-gold);
+    }
+
+    .btn-reset {
+      background-color: var(--color-danger-bg);
+      color: var(--color-danger-text);
+      border: 1px solid var(--color-danger-border);
+    }
+
+    .btn-reset:hover {
+      background-color: #FEE2E2;
+    }
+
+    .btn-reset:active, .btn-fav-filter:active {
+      transform: scale(0.97);
+    }
+
+    /* Thanh tìm kiếm */
+    .search-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 820px;
+    }
+
+    .search-wrapper {
+      position: relative;
+      flex: 1;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-coffee-600);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 10px 46px 10px 42px;
+      background-color: var(--color-white);
+      border: 2px solid var(--color-cream-300);
+      border-radius: var(--radius-lg);
+      font-size: 1rem;
+      color: var(--color-coffee-900);
+      box-shadow: var(--shadow-xs);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .search-input::placeholder {
+      color: rgba(111, 78, 55, 0.65);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--color-coffee-700);
+      box-shadow: 0 0 0 4px rgba(90, 62, 43, 0.12);
+    }
+
+    .clear-search-btn {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background-color: var(--color-cream-200);
+      color: var(--color-coffee-800);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color var(--transition-fast);
+    }
+
+    .clear-search-btn:hover {
+      background-color: var(--color-cream-300);
+    }
+
+    /* Thanh danh mục */
+    .category-bar-wrap {
+      margin-top: 12px;
+      margin-left: -16px;
+      margin-right: -16px;
+      padding: 0 16px;
+    }
+
+    .category-bar-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .category-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-cream-300) transparent;
+      flex: 1;
+    }
+
+    .category-tabs::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .category-tabs::-webkit-scrollbar-thumb {
+      background-color: var(--color-cream-300);
+      border-radius: 9999px;
+    }
+
+    .cat-scroll-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: var(--radius-md);
+      background-color: var(--color-white);
+      border: 1.5px solid var(--color-cream-300);
+      color: var(--color-coffee-800);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-xs);
+      transition: all var(--transition-fast);
+    }
+
+    .cat-scroll-btn:hover {
+      background-color: var(--color-cream-100);
+    }
+
+    .cat-scroll-btn:active {
+      transform: scale(0.95);
+    }
+
+    .cat-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 42px;
+      padding: 0 14px;
+      border-radius: var(--radius-md);
+      background-color: var(--color-white);
+      color: var(--color-coffee-700);
+      border: 1.5px solid var(--color-cream-200);
+      font-size: 0.875rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: all var(--transition-fast);
+    }
+
+    .cat-btn:hover {
+      background-color: var(--color-cream-100);
+      border-color: var(--color-cream-300);
+    }
+
+    .cat-btn:active {
+      transform: scale(0.97);
+    }
+
+    .cat-btn.is-active {
+      background-color: var(--color-coffee-800);
+      color: var(--color-white);
+      border-color: var(--color-coffee-800);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cat-btn.is-active .cat-icon {
+      color: var(--color-caramel-500);
+    }
+
+    .cat-count {
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background-color: var(--color-cream-100);
+      color: var(--color-coffee-700);
+    }
+
+    .cat-btn.is-active .cat-count {
+      background-color: rgba(255, 255, 255, 0.18);
+      color: var(--color-white);
+    }
+
+    /* =========================================================================
+       4. MAIN CONTENT & RECIPE GRID
+       ========================================================================= */
+    .app-main {
+      flex: 1;
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 20px 16px 32px;
+    }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .recipe-card {
+      background-color: var(--color-white);
+      border: 1.5px solid var(--color-cream-200);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+      position: relative;
+    }
+
+    .recipe-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(111, 78, 55, 0.45);
+    }
+
+    .recipe-card:active {
+      transform: scale(0.99);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card-badges {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-cat {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .badge-size {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background-color: var(--color-cream-100);
+      color: var(--color-coffee-700);
+      border: 1px solid var(--color-cream-200);
+    }
+
+    .btn-card-fav {
+      width: 38px;
+      height: 38px;
+      margin: -6px -6px 0 0;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-coffee-500);
+      flex-shrink: 0;
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .btn-card-fav:hover {
+      background-color: var(--color-cream-100);
+      color: var(--color-gold);
+    }
+
+    .btn-card-fav.is-fav {
+      color: var(--color-gold);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--color-coffee-900);
+      line-height: 1.35;
+      margin-bottom: 12px;
+      transition: color var(--transition-fast);
+    }
+
+    .recipe-card:hover .card-title {
+      color: var(--color-caramel-600);
+    }
+
+    .card-ing-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .card-ing-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      background-color: var(--color-cream-50);
+      font-size: 0.875rem;
+    }
+
+    .card-ing-name {
+      color: var(--color-coffee-700);
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .card-ing-amount {
+      color: var(--color-coffee-900);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .card-ing-more {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--color-coffee-600);
+      padding-left: 4px;
+    }
+
+    .card-footer {
+      padding-top: 12px;
+      border-top: 1px solid var(--color-cream-100);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+    }
+
+    .card-meta-count {
+      color: var(--color-coffee-600);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .card-cta {
+      font-weight: 700;
+      color: var(--color-coffee-800);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .recipe-card:hover .card-cta {
+      color: var(--color-caramel-600);
+    }
+
+    /* Màu sắc từng nhóm danh mục */
+    .cat-theme-coffee-tt { background-color: #FEF3C7; color: #78350F; border: 1px solid #FDE68A; }
+    .cat-theme-coffee-pm { background-color: #E7E5E4; color: #1C1917; border: 1px solid #D6D3D1; }
+    .cat-theme-trasua    { background-color: #FFEDD5; color: #7C2D12; border: 1px solid #FED7AA; }
+    .cat-theme-matcha    { background-color: #E8F0E5; color: #39542F; border: 1px solid #C5D9BE; }
+    .cat-theme-tea       { background-color: #FFE4E6; color: #881337; border: 1px solid #FECDD3; }
+    .cat-theme-yogurt    { background-color: #E0F2FE; color: #0C4A6E; border: 1px solid #BAE6FD; }
+    .cat-theme-nuocep    { background-color: #ECFCCB; color: #365314; border: 1px solid #D9F99D; }
+    .cat-theme-hot       { background-color: #FEE2E2; color: #7F1D1D; border: 1px solid #FECACA; }
+    .cat-theme-signature { background-color: #F3E8FF; color: #581C87; border: 1px solid #E9D5FF; }
+    .cat-theme-noel      { background-color: #D1FAE5; color: #064E3B; border: 1px solid #A7F3D0; }
+    .cat-theme-vattu     { background-color: #E2E8F0; color: #1E293B; border: 1px solid #CBD5E1; }
+
+    /* Empty State */
+    .empty-state {
+      background-color: var(--color-white);
+      border: 1.5px solid var(--color-cream-200);
+      border-radius: var(--radius-xl);
+      padding: 48px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .empty-icon-box {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-lg);
+      background-color: var(--color-cream-100);
+      color: var(--color-coffee-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .empty-title {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--color-coffee-900);
+      margin-bottom: 6px;
+    }
+
+    .empty-desc {
+      font-size: 0.9rem;
+      color: var(--color-coffee-600);
+      max-width: 420px;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      min-height: 46px;
+      padding: 0 22px;
+      border-radius: var(--radius-md);
+      background-color: var(--color-coffee-800);
+      color: var(--color-white);
+      font-weight: 700;
+      font-size: 0.9375rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--color-coffee-700);
+    }
+
+    /* =========================================================================
+       5. MODAL CHI TIẾT CÔNG THỨC & CHẾ ĐỘ TẬP TRUNG BARISTA
+       ========================================================================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(44, 29, 19, 0.65);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      animation: fadeIn 0.18s ease-out forwards;
+    }
+
+    .modal-panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 760px;
+      max-height: 94vh;
+      background-color: var(--color-cream-50);
+      border-top-left-radius: var(--radius-xl);
+      border-top-right-radius: var(--radius-xl);
+      border: 1px solid var(--color-cream-200);
+      box-shadow: var(--shadow-modal);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: slideUp 0.22s var(--transition-smooth) forwards;
+    }
+
+    /* Chế độ xem tập trung toàn màn hình cho quầy pha chế */
+    .modal-panel.is-focus-mode {
+      max-width: 100vw;
+      width: 100vw;
+      height: 100vh;
+      max-height: 100vh;
+      border-radius: 0;
+      border: none;
+    }
+
+    .modal-panel.is-focus-mode .modal-body-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .modal-panel.is-focus-mode .ing-table td {
+      font-size: 1.125rem;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+
+    .modal-panel.is-focus-mode .step-text {
+      font-size: 1.125rem;
+    }
+
+    .modal-header {
+      background-color: var(--color-white);
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--color-cream-200);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .modal-badges {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--color-coffee-900);
+      line-height: 1.28;
+    }
+
+    .modal-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn-modal-icon {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 12px;
+      border-radius: var(--radius-md);
+      background-color: var(--color-cream-100);
+      color: var(--color-coffee-800);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-modal-icon:hover {
+      background-color: var(--color-cream-200);
+    }
+
+    .btn-modal-icon:active {
+      transform: scale(0.96);
+    }
+
+    .btn-modal-icon.is-active {
+      background-color: var(--color-coffee-800);
+      color: var(--color-white);
+    }
+
+    .btn-modal-icon.is-fav {
+      background-color: var(--color-amber-50);
+      color: var(--color-gold);
+      border: 1px solid var(--color-amber-200);
+    }
+
+    .btn-modal-close:hover {
+      background-color: var(--color-danger-bg);
+      color: var(--color-danger-text);
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+      overscroll-behavior: contain;
+    }
+
+    .modal-body-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-coffee-700);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-coffee-700);
+      background-color: var(--color-cream-200);
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    /* Bảng nguyên liệu & định lượng */
+    .ing-table-wrap {
+      background-color: var(--color-white);
+      border-radius: var(--radius-lg);
+      border: 1.5px solid var(--color-cream-200);
+      overflow: hidden;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .ing-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .ing-table thead th {
+      background-color: var(--color-cream-100);
+      border-bottom: 1.5px solid var(--color-cream-200);
+      padding: 11px 16px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--color-coffee-700);
+    }
+
+    .ing-table thead th:last-child {
+      text-align: right;
+    }
+
+    .ing-table tbody tr {
+      border-bottom: 1px solid var(--color-cream-100);
+      transition: background-color var(--transition-fast);
+    }
+
+    .ing-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .ing-table tbody tr:hover {
+      background-color: var(--color-cream-50);
+    }
+
+    .ing-table td {
+      padding: 12px 16px;
+      font-size: 1rem;
+      vertical-align: middle;
+    }
+
+    .ing-col-name {
+      font-weight: 600;
+      color: var(--color-coffee-900);
+    }
+
+    .ing-col-amount {
+      text-align: right;
+      font-weight: 800;
+      color: var(--color-coffee-800);
+      white-space: nowrap;
+    }
+
+    /* Danh sách các bước pha chế (Có thể chạm để đánh dấu bước đang làm) */
+    .steps-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background-color: var(--color-white);
+      padding: 13px 15px;
+      border-radius: var(--radius-md);
+      border: 1.5px solid var(--color-cream-200);
+      box-shadow: var(--shadow-xs);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .step-item:hover {
+      border-color: var(--color-cream-300);
+    }
+
+    .step-item.is-done {
+      background-color: var(--color-cream-100);
+      border-color: var(--color-cream-200);
+      opacity: 0.72;
+    }
+
+    .step-item.is-done .step-num {
+      background-color: var(--color-matcha-600);
+    }
+
+    .step-item.is-done .step-text {
+      text-decoration: line-through;
+      color: var(--color-coffee-600);
+    }
+
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--radius-sm);
+      background-color: var(--color-coffee-800);
+      color: var(--color-cream-50);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-text {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--color-coffee-900);
+      line-height: 1.55;
+    }
+
+    .step-hint {
+      font-size: 0.75rem;
+      color: var(--color-coffee-600);
+      font-weight: 500;
+    }
+
+    /* Decor & Lưu ý */
+    .extras-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .extra-box {
+      padding: 15px 16px;
+      border-radius: var(--radius-lg);
+    }
+
+    .extra-decor {
+      background-color: var(--color-matcha-100);
+      border: 1.5px solid rgba(74, 107, 62, 0.25);
+    }
+
+    .extra-notes {
+      background-color: var(--color-amber-50);
+      border: 1.5px solid var(--color-amber-200);
+    }
+
+    .extra-head {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .extra-decor .extra-head { color: var(--color-matcha-700); }
+    .extra-notes .extra-head { color: var(--color-amber-800); }
+
+    .extra-text {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-coffee-900);
+      line-height: 1.5;
+    }
+
+    .extra-notes-list {
+      padding-left: 18px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--color-amber-950);
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+      background-color: var(--color-white);
+      padding: 12px 20px;
+      border-top: 1px solid var(--color-cream-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .copy-toast {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-matcha-700);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+    }
+
+    .copy-toast.is-visible {
+      opacity: 1;
+    }
+
+    /* =========================================================================
+       6. FOOTER
+       ========================================================================= */
+    .app-footer {
+      background-color: var(--color-cream-100);
+      border-top: 1px solid var(--color-cream-200);
+      padding: 16px;
+    }
+
+    .footer-inner {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--color-coffee-600);
+    }
+
+    .kbd-key {
+      display: inline-block;
+      padding: 1px 6px;
+      background-color: var(--color-white);
+      border: 1px solid var(--color-cream-300);
+      border-radius: 5px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--color-coffee-800);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* =========================================================================
+       7. RESPONSIVE BREAKPOINTS (MOBILE, TABLET, LAPTOP, POS)
+       ========================================================================= */
+    @media (min-width: 640px) {
+      .header-inner { padding: 16px 24px 14px; }
+      .brand-title { font-size: 1.4rem; }
+      .category-bar-wrap { margin-left: 0; margin-right: 0; padding: 0; }
+      .app-main { padding: 24px 24px 40px; }
+      .recipe-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+      .modal-overlay { align-items: center; padding: 16px; }
+      .modal-panel { border-radius: var(--radius-xl); max-height: 90vh; }
+      .modal-header { padding: 20px 26px; }
+      .modal-title { font-size: 1.55rem; }
+      .modal-body { padding: 24px 26px; }
+      .modal-footer { padding: 14px 26px; }
+      .extras-grid.has-two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .footer-inner { flex-direction: row; align-items: center; justify-content: space-between; padding: 0 8px; }
+    }
+
+    @media (min-width: 768px) {
+      .category-tabs {
+        flex-wrap: wrap;
+        overflow-x: visible;
+        padding-bottom: 0;
+      }
+      .cat-scroll-btn {
+        display: none;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .recipe-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    }
+
+    @media (min-width: 1280px) {
+      .recipe-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+
+    /* Tối ưu cho màn hình cảm ứng lớn / POS */
+    @media (pointer: coarse) {
+      .cat-btn { min-height: 46px; padding: 0 16px; }
+      .btn-modal-icon { min-width: 48px; min-height: 48px; }
+      .step-item { padding: 15px 16px; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(16px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =======================================================================
+       HEADER: THƯƠNG HIỆU, TÌM KIẾM NHANH & LỌC DANH MỤC
+       ======================================================================= -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="top-bar">
+        <div class="brand-group">
+          <div class="brand-logo" aria-hidden="true">
+            <svg class="icon" style="width:24px;height:24px" viewBox="0 0 24 24">
+              <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
+              <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
+              <line x1="6" y1="2" x2="6" y2="4"/>
+              <line x1="10" y1="2" x2="10" y2="4"/>
+              <line x1="14" y1="2" x2="14" y2="4"/>
+            </svg>
+          </div>
+          <div>
+            <h1 class="brand-title">Công thức pha chế - Mè Coffee</h1>
+            <p class="brand-subtitle">Hệ thống tra cứu chuẩn định lượng quầy pha chế</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <span class="stat-badge" aria-live="polite">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span id="recipeCountText">Đang tải...</span>
+          </span>
+
+          <button type="button" id="favFilterBtn" class="btn-action-pill btn-fav-filter" aria-pressed="false" title="Lọc món yêu thích đã ghim">
+            <svg class="icon" id="favFilterIcon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Yêu thích (<span id="favCountText">0</span>)</span>
+          </button>
+
+          <button type="button" id="resetFilterBtn" class="btn-action-pill btn-reset hidden" title="Đặt lại toàn bộ bộ lọc">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>Đặt lại</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Thanh tìm kiếm thông minh -->
+      <div class="search-row">
+        <div class="search-wrapper">
+          <span class="search-icon" aria-hidden="true">
+            <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </span>
+          <input
+            type="search"
+            id="searchInput"
+            class="search-input"
+            placeholder="Tìm tên món, nguyên liệu, danh mục (hỗ trợ không dấu)..."
+            aria-label="Tìm kiếm công thức pha chế"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button
+            type="button"
+            id="clearSearchBtn"
+            class="clear-search-btn hidden"
+            aria-label="Xóa nội dung tìm kiếm"
+            title="Xóa từ khóa"
+          >
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Thanh lọc danh mục -->
+      <nav class="category-bar-wrap" aria-label="Danh mục thức uống">
+        <button type="button" id="catScrollLeftBtn" class="cat-scroll-btn" aria-label="Cuộn danh mục sang trái" title="Cuộn trái">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div id="categoryTabs" class="category-tabs" role="tablist"></div>
+        <button type="button" id="catScrollRightBtn" class="cat-scroll-btn" aria-label="Cuộn danh mục sang phải" title="Cuộn phải">
+          <svg class="icon" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =======================================================================
+       MAIN: LƯỚI CÔNG THỨC PHA CHẾ
+       ======================================================================= -->
+  <main class="app-main">
+    <div id="emptyState" class="empty-state hidden" role="status">
+      <div class="empty-icon-box" aria-hidden="true">
+        <svg class="icon" style="width:30px;height:30px" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <h2 class="empty-title">Không tìm thấy công thức phù hợp</h2>
+      <p class="empty-desc">
+        Thử tìm kiếm với từ khóa ngắn gọn hơn, gõ tiếng Việt không dấu hoặc chuyển sang danh mục "Tất cả".
+      </p>
+      <button type="button" id="emptyResetBtn" class="btn-primary">
+        Xem tất cả công thức
+      </button>
+    </div>
+
+    <div id="recipeGrid" class="recipe-grid"></div>
+  </main>
+
+  <!-- =======================================================================
+       FOOTER
+       ======================================================================= -->
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <p>Dữ liệu chuẩn hóa từ tài liệu <strong>CongThuc.docx</strong> (Giữ nguyên 100% thông số định lượng gốc).</p>
+      <p>
+        Phím tắt quầy bar: <kbd class="kbd-key">/</kbd> Tìm nhanh •
+        <kbd class="kbd-key">F</kbd> Chế độ tập trung •
+        <kbd class="kbd-key">ESC</kbd> Đóng
+      </p>
+    </div>
+  </footer>
+
+  <!-- =======================================================================
+       MODAL: CHI TIẾT CÔNG THỨC & CHẾ ĐỘ BARISTA TẬP TRUNG
+       ======================================================================= -->
+  <div id="recipeModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div id="modalBackdrop" class="modal-backdrop"></div>
+
+    <div id="modalPanel" class="modal-panel">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div>
+          <div class="modal-badges">
+            <span id="modalCategoryBadge" class="badge-cat">Danh mục</span>
+            <span id="modalSizeBadge" class="badge-size hidden"></span>
+          </div>
+          <h2 id="modalTitle" class="modal-title">Tên món</h2>
+        </div>
+
+        <div class="modal-toolbar">
+          <button type="button" id="modalFavBtn" class="btn-modal-icon" title="Đánh dấu yêu thích" aria-label="Đánh dấu yêu thích">
+            <svg class="icon" id="modalFavIcon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </button>
+
+          <button type="button" id="focusModeBtn" class="btn-modal-icon" title="Chế độ tập trung toàn màn hình (Phím F)" aria-pressed="false">
+            <svg class="icon" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            <span class="focus-label">Tập trung</span>
+          </button>
+
+          <button type="button" id="copyBtn" class="btn-modal-icon" title="Sao chép công thức" aria-label="Sao chép công thức">
+            <svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Sao chép</span>
+          </button>
+
+          <button type="button" id="modalCloseTopBtn" class="btn-modal-icon btn-modal-close" title="Đóng (ESC)" aria-label="Đóng chi tiết công thức">
+            <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div id="modalBodyScroll" class="modal-body">
+        <div class="modal-body-inner">
+          <!-- 1. Bảng Nguyên liệu & Định lượng -->
+          <section aria-labelledby="secIngHeading">
+            <div class="section-head">
+              <h3 id="secIngHeading" class="section-title">
+                <svg class="icon" style="color:var(--color-caramel-500)" viewBox="0 0 24 24"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+                Nguyên liệu & Định lượng
+              </h3>
+              <span id="modalIngCount" class="section-pill"></span>
+            </div>
+
+            <div class="ing-table-wrap">
+              <table class="ing-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Nguyên liệu</th>
+                    <th scope="col">Định lượng / Đơn vị</th>
+                  </tr>
+                </thead>
+                <tbody id="modalIngredientsBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- 2. Quy trình pha chế từng bước -->
+          <section aria-labelledby="secStepsHeading">
+            <div class="section-head">
+              <h3 id="secStepsHeading" class="section-title">
+                <svg class="icon" style="color:var(--color-coffee-700)" viewBox="0 0 24 24"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+                Thứ tự & Hướng dẫn pha chế
+              </h3>
+              <span class="step-hint">Chạm vào bước để đánh dấu xong</span>
+            </div>
+            <ol id="modalStepsList" class="steps-list"></ol>
+          </section>
+
+          <!-- 3. Decor & Lưu ý -->
+          <div id="modalExtrasGrid" class="extras-grid">
+            <section id="modalDecorBox" class="extra-box extra-decor hidden">
+              <div class="extra-head">
+                <svg class="icon" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                Decor / Trình bày
+              </div>
+              <p id="modalDecorText" class="extra-text"></p>
+            </section>
+
+            <section id="modalNotesBox" class="extra-box extra-notes hidden">
+              <div class="extra-head">
+                <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Lưu ý quan trọng
+              </div>
+              <ul id="modalNotesList" class="extra-notes-list"></ul>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <span id="copyToast" class="copy-toast" role="status" aria-live="polite">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Đã sao chép công thức vào bộ nhớ tạm!
+        </span>
+        <button type="button" id="modalCloseBottomBtn" class="btn-primary">
+          Đóng công thức
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================================
+       JAVASCRIPT: DỮ LIỆU GỐC & LOGIC XỬ LÝ TỐI ƯU
+       ======================================================================= -->
+  <script>
+    (function () {
+      "use strict";
+
+      // =====================================================================
+      // 1. DỮ LIỆU CÔNG THỨC GỐC (GIỮ NGUYÊN 100% TỪ INDEX.HTML - 54 MỤC)
+      // =====================================================================
+      const RECIPES_DATA = [
+        // --- I. CÀ PHÊ TRUYỀN THỐNG ---
+        {
+          id: "cf-tt-1",
+          category: "Cà phê truyền thống",
+          name: "Cà phê đen đá / sữa đá",
+          size: "Ly 150ml",
+          ingredients: [
+            { item: "Cà phê Phin", amount: "40ml" },
+            { item: "Sữa đặc / Đường", amount: "1 bowl sữa / 1 thẻ đường" }
+          ],
+          steps: [
+            "Cho cà phê phin vào ly.",
+            "Để riêng sữa đặc hoặc đường đi kèm với chén đá."
+          ],
+          decor: "1 chén đá, đi kèm sữa đặc hoặc đường.",
+          notes: []
+        },
+        {
+          id: "cf-tt-2",
+          category: "Cà phê truyền thống",
+          name: "Bạc xỉu",
+          size: "Ly 350ml",
+          ingredients: [
+            { item: "Cà phê Phin", amount: "30ml" },
+            { item: "Sữa tươi", amount: "50ml" },
+            { item: "Sữa đặc", amount: "30ml" },
+            { item: "Rich", amount: "10ml" }
+          ],
+          steps: [
+            "Cho lần lượt sữa tươi, sữa đặc, Rich đổ vào ly và khuấy đều.",
+            "Cho đá vào vừa ngang mặt sữa.",
+            "Đánh bọt cà phê bằng máy rồi rót lên trên cùng."
+          ],
+          decor: "",
+          notes: [
+            "Khi khách muốn làm nóng: đong nguyên liệu vào ca đong, đánh nóng đến 60 độ."
+          ]
+        },
+        {
+          id: "cf-tt-3",
+          category: "Cà phê truyền thống",
+          name: "Cà phê đen Sài Gòn / Sữa Sài Gòn",
+          size: "Ly 350ml",
+          ingredients: [
+            { item: "Cà phê Phin", amount: "60ml" },
+            { item: "Sữa đặc / Đường", amount: "20ml / 20ml" }
+          ],
+          steps: [
+            "Đong nguyên liệu vào bình shaker, cho đá vào lắc tạo bọt rồi đổ ra ly."
+          ],
+          decor: "",
+          notes: [
+            "Lắc tạo bọt dày để tránh bọt bị tan nhanh."
+          ]
+        },
+        {
+          id: "cf-tt-4",
+          category: "Cà phê truyền thống",
+          name: "Cà phê muối",
+          size: "Ly 250ml",
+          ingredients: [
+            { item: "Cà phê", amount: "30ml" },
+            { item: "Kem muối", amount: "40ml" },
+            { item: "Sữa đặc", amount: "20ml" }
+          ],
+          steps: [
+            "Đong các hỗn hợp vào ly theo đúng thứ tự để tách tầng: 20ml sữa đặc -> 30ml cà phê phin -> 2 muỗng nâu kem muối (40ml)."
+          ],
+          decor: "Rắc bột cacao lên bề mặt.",
+          notes: [
+            "Bỏ chén đá riêng đi kèm."
+          ]
+        },
+        {
+          id: "cf-tt-5",
+          category: "Cà phê truyền thống",
+          name: "Cà phê kem trứng",
+          size: "Ly 250ml",
+          ingredients: [
+            { item: "Cà phê", amount: "30ml" },
+            { item: "Kem trứng", amount: "40ml" },
+            { item: "Sữa đặc", amount: "20ml" }
+          ],
+          steps: [
+            "Đong các hỗn hợp vào ly theo đúng thứ tự để tách tầng: 20ml sữa đặc -> 30ml cà phê phin -> 2 muỗng nâu kem trứng (40ml)."
+          ],
+          decor: "Rắc bột cacao lên bề mặt.",
+          notes: [
+            "Bỏ chén đá riêng đi kèm."
+          ]
+        },
+        {
+          id: "cf-tt-6",
+          category: "Cà phê truyền thống",
+          name: "Cà phê hạt dẻ jelly",
+          size: "",
+          ingredients: [
+            { item: "Cà phê phin", amount: "30ml" },
+            { item: "Syrup hạt dẻ", amount: "20ml" },
+            { item: "Sữa tươi", amount: "50ml" },
+            { item: "Đường", amount: "10ml" },
+            { item: "Rich", amount: "10ml" }
+          ],
+          steps: [
+            "Khuấy đều đường + syrup hạt dẻ + sữa tươi vào ly.",
+            "Thêm đá vào 2/3 ly.",
+            "Đánh bông cà phê ở trong một ca đong khác.",
+            "Rót thêm cà phê đã đánh bông vào ly.",
+            "Cho thạch jelly lên trên cùng."
+          ],
+          decor: "Thạch jelly.",
+          notes: [
+            "Thức uống thành phẩm phải đảm bảo phân tầng rõ rệt."
+          ]
+        },
+
+        // --- II. CÀ PHÊ PHA MÁY ---
+        {
+          id: "cf-pm-7",
+          category: "Cà phê pha máy",
+          name: "Espresso",
+          size: "17gr / 34ml",
+          ingredients: [
+            { item: "Cà phê Espresso", amount: "17gr / 34ml" },
+            { item: "Sữa đặc / Đường", amount: "1 bowl sữa / 1 thẻ đường" }
+          ],
+          steps: [
+            "Kiểm tra vệ sinh dụng cụ và ly đựng.",
+            "Lấy bột cà phê vào tay pha (17gr).",
+            "Nén cà phê với lực nén 5 - 10kg.",
+            "Xả nước nóng ở đầu group máy pha 2 - 3 giây.",
+            "Lắp tay pha vào máy và tiến hành chiết xuất (34ml)."
+          ],
+          decor: "Đi kèm 1 bowl sữa hoặc 1 thẻ đường.",
+          notes: []
+        },
+        {
+          id: "cf-pm-8",
+          category: "Cà phê pha máy",
+          name: "Latte (Đá)",
+          size: "Ly 350ml",
+          ingredients: [
+            { item: "Cà phê Espresso", amount: "1 shot" },
+            { item: "Đường", amount: "10ml" },
+            { item: "Sữa đặc", amount: "20ml" },
+            { item: "Rich", amount: "10ml" },
+            { item: "Sữa thanh trùng", amount: "150ml" }
+          ],
+          steps: [
+            "Cho sữa thanh trùng vào ca đánh nóng đến 60 độ.",
+            "Cho tiếp sữa đặc, Rich, đường vào ly và khuấy đều.",
+            "Thêm đá vào ly.",
+            "Chiết xuất 1 shot Espresso rót lên trên."
+          ],
+          decor: "",
+          notes: []
+        },
+        {
+          id: "cf-pm-9",
+          category: "Cà phê pha máy",
+          name: "Latte (Nóng)",
+          size: "Ly nóng",
+          ingredients: [
+            { item: "Cà phê Espresso", amount: "1 shot" },
+            { item: "Sữa thanh trùng", amount: "200ml" }
+          ],
+          steps: [
+            "Chiết xuất 1 shot Espresso ra ly.",
+            "Đánh sữa tạo bọt foam mỏng đến nhiệt độ 55 - 60 độ.",
+            "Đổ sữa vào ly Espresso và tạo hình Latte Art."
+          ],
+          decor: "Đi kèm với 1 thẻ đường.",
+          notes: []
+        },
+        {
+          id: "cf-pm-10",
+          category: "Cà phê pha máy",
+          name: "Cappuccino (Đá)",
+          size: "Ly 350ml",
+          ingredients: [
+            { item: "Cà phê Espresso", amount: "1 shot" },
+            { item: "Đường", amount: "10ml" },
+            { item: "Sữa đặc", amount: "20ml" },
+            { item: "Rich", amount: "10ml" },
+            { item: "Sữa thanh trùng", amount: "120ml" }
+          ],
+          steps: [
+            "Đánh sữa tạo foam dày đến nhiệt độ 40 - 50 độ.",
+            "Cho tiếp sữa đặc, Rich, đường vào ly khuấy đều.",
+            "Thêm đá vào ly.",
+            "Chiết xuất Espresso rót vào ly."
+          ],
+          decor: "",
+          notes: []
+        },
+        {
+          id: "cf-pm-11",
+          category: "Cà phê pha máy",
+          name: "Cappuccino (Nóng)",
+          size: "Ly nóng",
+          ingredients: [
+            { item: "Cà phê Espresso", amount: "1 shot" },
+            { item: "Sữa thanh trùng", amount: "200ml" }
+          ],
+          steps: [
+            "Chiết xuất 1 shot Espresso ra ly.",
+            "Đánh sữa tạo foam dày đến nhiệt độ 55 - 60 độ.",
+            "Rót sữa tạo hình Art."
+          ],
+          decor: "Đi kèm với 1 thẻ đường.",
+          notes: []
+        },
+
+        // --- III. TRÀ SỮA ---
+        {
+          id: "ts-1",
+          category: "Trà sữa",
+          name: "Sữa tươi trân châu đường đen",
+          size: "",
+          ingredients: [
+            { item: "Sữa thanh trùng", amount: "150ml" },
+            { item: "Rich", amount: "10ml" },
+            { item: "Trân châu đen", amount: "1 vá" },
+            { item: "Syrup đường đen", amount: "10ml" },
+            { item: "Đường nước", amount: "10ml" }
+          ],
+          steps: [
+            "Cho trân châu đen và syrup đường đen vào ly, xoay đều tạo vết loang quanh thành ly.",
+            "Thêm đá đầy ly.",
+            "Khuấy đều sữa tươi, đường nước và Rich sau đó rót nhẹ vào ly."
+          ],
+          decor: "Vết loang đường đen quanh thành ly.",
+          notes: []
+        },
+        {
+          id: "ts-2",
+          category: "Trà sữa",
+          name: "Trà sữa Hong Kong phô mai tươi",
+          size: "",
+          ingredients: [
+            { item: "Trà sữa", amount: "150ml" },
+            { item: "Đường", amount: "20ml" },
+            { item: "Khúc bạch", amount: "3 viên" },
+            { item: "Trân châu đen", amount: "1 muỗng" }
+          ],
+          steps: [
+            "Khuấy đều trà sữa và đường nước với đá.",
+            "Cho ra ly và thêm topping trân châu đen, khúc bạch viên lên trên."
+          ],
+          decor: "Trân châu đen, Khúc bạch viên (3 viên).",
+          notes: []
+        },
+        {
+          id: "ts-3",
+          category: "Trà sữa",
+          name: "Trà sữa Bá Vương",
+          size: "",
+          ingredients: [
+            { item: "Trà sữa", amount: "150ml" },
+            { item: "Đường nước", amount: "20ml" },
+            { item: "Thạch đào cắt lát vuông", amount: "1 vá" },
+            { item: "Trân châu đen", amount: "1 muỗng" }
+          ],
+          steps: [
+            "Khuấy đều trà sữa và đường nước với đá.",
+            "Cho ra ly và thêm topping trân châu đen, thạch đào cắt lát vuông."
+          ],
+          decor: "Trân châu đen, thạch đào.",
+          notes: []
+        },
+        {
+          id: "ts-4",
+          category: "Trà sữa",
+          name: "Trà sữa đường đen kem cheese",
+          size: "",
+          ingredients: [
+            { item: "Trà sữa", amount: "150ml" },
+            { item: "Đường", amount: "20ml" },
+            { item: "Syrup đường đen", amount: "10ml" },
+            { item: "Kem muối", amount: "40ml" }
+          ],
+          steps: [
+            "Cho trân châu và syrup đường đen vào ly, tạo vết loang quanh thành ly.",
+            "Thêm đá đầy ly và rót hỗn hợp trà sữa đã khuấy đường vào.",
+            "Rót lớp kem muối (40ml) phủ lên trên bề mặt."
+          ],
+          decor: "Trân châu đen 1 vá.",
+          notes: []
+        },
+        {
+          id: "ts-5",
+          category: "Trà sữa",
+          name: "Trà sữa gạo rang",
+          size: "",
+          ingredients: [
+            { item: "Trà gạo rang", amount: "120ml" },
+            { item: "Bột béo", amount: "25gr" },
+            { item: "Sữa đặc", amount: "15ml" },
+            { item: "Đường", amount: "25ml" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào ca đong đánh nóng lên bằng vòi đánh sữa (lưu ý đánh tan bột, không đánh quá nóng).",
+            "Thêm đá vào ly.",
+            "Lắc tạo bọt với đá nhỏ, lược đá cho vào ly."
+          ],
+          decor: "Trân châu đen.",
+          notes: [
+            "Lưu ý đánh tan hoàn toàn bột béo nhưng không để nhiệt độ quá nóng."
+          ]
+        },
+        {
+          id: "ts-6",
+          category: "Trà sữa",
+          name: "Trà sữa khoai môn",
+          size: "",
+          ingredients: [
+            { item: "Hồng trà", amount: "120ml" },
+            { item: "Đường nước", amount: "25ml" },
+            { item: "Bột sữa", amount: "25g" },
+            { item: "Bột khoai môn", amount: "2 muỗng" },
+            { item: "Thạch đào cắt lát vuông", amount: "1 vá" },
+            { item: "Khúc bạch", amount: "2 viên" },
+            { item: "Trân châu", amount: "1 vá" },
+            { item: "Sốt khoai môn", amount: "10ml + 20ml" }
+          ],
+          steps: [
+            "Cho hồng trà, đường nước, bột sữa, bột khoai môn vào ca sục nóng cho tan đều.",
+            "Phết 10ml sốt khoai môn quanh thành ly.",
+            "Thêm lần lượt trân châu, thạch đào, khúc bạch vào ly.",
+            "Thêm đá vào ly rồi rót hỗn hợp trà sữa khoai môn trên vào.",
+            "Thêm 20ml sốt khoai môn lên mặt ly."
+          ],
+          decor: "10ml sốt viền thành ly + 20ml sốt phủ mặt ly.",
+          notes: []
+        },
+        {
+          id: "ts-7",
+          category: "Trà sữa",
+          name: "Sữa tươi khoai môn",
+          size: "",
+          ingredients: [
+            { item: "Sữa thanh trùng", amount: "150ml" },
+            { item: "Rich", amount: "10ml" },
+            { item: "Trân châu đen", amount: "1 vá" },
+            { item: "Đường nước", amount: "10ml" },
+            { item: "Sốt khoai môn", amount: "10ml + 20ml" }
+          ],
+          steps: [
+            "Cho trân châu đen và 10ml sốt khoai môn vào ly, tạo vết loang quanh thành ly.",
+            "Thêm đá đầy ly.",
+            "Khuấy đều sữa tươi, đường nước và Rich sau đó rót nhẹ vào ly.",
+            "Thêm 20ml sốt khoai môn lên mặt ly."
+          ],
+          decor: "Vết loang sốt khoai môn + 20ml sốt phủ mặt.",
+          notes: []
+        },
+        {
+          id: "ts-8",
+          category: "Trà sữa",
+          name: "Trà sữa kem trứng nướng",
+          size: "",
+          ingredients: [
+            { item: "Trà sữa", amount: "150ml" },
+            { item: "Đường", amount: "20ml" },
+            { item: "Kem trứng", amount: "40ml" },
+            { item: "Topping", amount: "Full" }
+          ],
+          steps: [
+            "Khuấy đều trà sữa và đường nước.",
+            "Cho topping vào ly, thêm đá đầy ly và rót trà sữa vào.",
+            "Phủ 40ml kem trứng lên trên bề mặt (có thể rắc đường khò lửa tạo lớp nướng)."
+          ],
+          decor: "Full topping & lớp kem trứng nướng bề mặt.",
+          notes: []
+        },
+
+        // --- IV. MATCHA & CHOCOLATE ---
+        {
+          id: "mc-1",
+          category: "Matcha & Chocolate",
+          name: "Matcha Latte",
+          size: "Ly 350ml",
+          ingredients: [
+            { item: "Bột Matcha + Nước sôi (85-90 độ)", amount: "3g + 30ml" },
+            { item: "Đường", amount: "15ml" },
+            { item: "Sữa đặc", amount: "10ml" },
+            { item: "Sữa thanh trùng", amount: "70ml" },
+            { item: "Rich", amount: "10ml (theo quy trình)" }
+          ],
+          steps: [
+            "Rây bột matcha cho mịn sau đó khuấy tan đều với 30ml nước sôi (85-90 độ).",
+            "Cho hỗn hợp sữa đặc, Rich, đường, sữa tươi vào ly khuấy đều.",
+            "Thêm đá vào ly.",
+            "Rót nhẹ phần nước cốt matcha lên trên cùng."
+          ],
+          decor: "Phân tầng xanh matcha và trắng sữa.",
+          notes: []
+        },
+        {
+          id: "mc-2",
+          category: "Matcha & Chocolate",
+          name: "Matcha Xoài",
+          size: "",
+          ingredients: [
+            { item: "Bột Matcha + Nước sôi (85-90 độ)", amount: "3gr + 30ml nước sôi" },
+            { item: "Rich", amount: "10ml" },
+            { item: "Đường", amount: "10ml" },
+            { item: "Mứt xoài Mama", amount: "40ml" },
+            { item: "Sữa tươi", amount: "70ml" }
+          ],
+          steps: [
+            "Rây bột matcha sau đó khuấy tan với 30ml nước sôi ở ngoài ca đong.",
+            "Cho 40ml mứt xoài vào dưới đáy ly.",
+            "Thêm đá vào ly.",
+            "Lấy ca đong khuấy đều hỗn hợp sữa tươi + đường + Rich, sau đó rót nhẹ vào ly.",
+            "Rót nhẹ phần matcha lên trên cùng."
+          ],
+          decor: "",
+          notes: [
+            "Thành phẩm phải phân 3 tầng rõ rệt (Vàng xoài - Trắng sữa - Xanh matcha)."
+          ]
+        },
+        {
+          id: "mc-3",
+          category: "Matcha & Chocolate",
+          name: "Choco muối",
+          size: "",
+          ingredients: [
+            { item: "Bột cacao + Nước sôi", amount: "5g + 50ml" },
+            { item: "Rich", amount: "10ml" },
+            { item: "Sữa đặc", amount: "15ml" },
+            { item: "Kem muối", amount: "40ml" }
+          ],
+          steps: [
+            "Khuấy tan bột cacao với nước sôi ở ca đong.",
+            "Phết 10ml sốt choco quanh thành ly.",
+            "Thêm sữa đặc và Rich vào ca cacao khuấy đều.",
+            "Cho hỗn hợp đã khuấy vào ly, thêm đá đầy ly.",
+            "Rót phần kem muối (40ml) lên trên cùng."
+          ],
+          decor: "Rắc bột cacao lên lớp kem muối.",
+          notes: []
+        },
+        {
+          id: "mc-4",
+          category: "Matcha & Chocolate",
+          name: "Chocolate đá",
+          size: "",
+          ingredients: [
+            { item: "Bột cacao + Nước sôi", amount: "5g + 50ml" },
+            { item: "Rich", amount: "10ml" },
+            { item: "Đường", amount: "10ml" },
+            { item: "Sữa tươi", amount: "50ml" },
+            { item: "Sữa đặc", amount: "30ml" }
+          ],
+          steps: [
+            "Khuấy tan hỗn hợp sữa tươi, sữa đặc, Rich, đường vào ly.",
+            "Thêm đá đầy ly.",
+            "Khuấy tan bột cacao + nước sôi ở ca riêng.",
+            "Rót nhẹ phần cacao lên trên ly."
+          ],
+          decor: "Thành phẩm phân 2 tầng.",
+          notes: []
+        },
+        {
+          id: "mc-5",
+          category: "Matcha & Chocolate",
+          name: "Chocolate đá xay / Matcha đá xay",
+          size: "",
+          ingredients: [
+            { item: "Bột cacao / Bột matcha", amount: "1 muỗng đầy" },
+            { item: "Sữa đặc", amount: "40ml" },
+            { item: "Sữa tươi", amount: "40ml" },
+            { item: "Rich", amount: "20ml" },
+            { item: "Bột Frappe (Frap)", amount: "1 muỗng" },
+            { item: "Kem xịt (Whipping)", amount: "Phủ bề mặt" }
+          ],
+          steps: [
+            "Cho hỗn hợp lần lượt gồm sữa tươi, Rich, sữa đặc, bột cacao/matcha, bột Frap vào cối máy xay, thêm 1 ly đá.",
+            "Xay nhuyễn mịn trong 60 giây.",
+            "Đổ ra ly và trang trí."
+          ],
+          decor: "Xịt kem tươi bằng bình xịt kem trên bề mặt ly.",
+          notes: []
+        },
+
+        // --- V. TEA ---
+        {
+          id: "tea-1",
+          category: "Tea",
+          name: "Trà mãng cầu",
+          size: "",
+          ingredients: [
+            { item: "Trà xanh", amount: "100ml" },
+            { item: "Mứt mãng cầu tươi", amount: "50ml" },
+            { item: "Đường", amount: "20ml" },
+            { item: "Tắc", amount: "1 quả" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào bình shaker.",
+            "Thêm đá và lắc đều nhẹ.",
+            "Đổ hỗn hợp ra ly."
+          ],
+          decor: "Thịt mãng cầu, lá dứa, lát chanh.",
+          notes: [
+            "Khi cho hỗn hợp ra ly cần để phần thịt mãng cầu nổi lên trên bề mặt."
+          ]
+        },
+        {
+          id: "tea-2",
+          category: "Tea",
+          name: "Hồng đào cam sả",
+          size: "Ly 500ml",
+          ingredients: [
+            { item: "Hồng trà", amount: "100ml" },
+            { item: "Sốt sả", amount: "10ml" },
+            { item: "Syrup đào", amount: "20ml" },
+            { item: "Đường", amount: "20ml" },
+            { item: "Cốt chanh", amount: "10ml" }
+          ],
+          steps: [
+            "Cho tất cả hỗn hợp vào bình shaker.",
+            "Thêm đá và lắc đều, sau đó rót ra ly."
+          ],
+          decor: "3 lát đào, sả cắt mỏng, lát chanh, lá dứa.",
+          notes: [
+            "Sốt sả chia ra đủ dùng trong ca (bảo quản mát).",
+            "Công thức sốt sả: 50gr sả + 150ml nước lọc (xay nhuyễn lọc lấy nước cốt)."
+          ]
+        },
+        {
+          id: "tea-3",
+          category: "Tea",
+          name: "Trà ổi hồng kim quất",
+          size: "",
+          ingredients: [
+            { item: "Hồng trà", amount: "100ml" },
+            { item: "Syrup ổi", amount: "10ml" },
+            { item: "Mứt tắc xí muội", amount: "1/2 muỗng đen" },
+            { item: "Đường", amount: "10ml" },
+            { item: "Tắc", amount: "2 quả" },
+            { item: "Mứt ổi", amount: "20ml" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào bình shaker.",
+            "Thêm đá và lắc đều, đổ ra ly."
+          ],
+          decor: "3 lát ổi hồng, lát chanh, lá dứa.",
+          notes: []
+        },
+        {
+          id: "tea-4",
+          category: "Tea",
+          name: "Trà thạch đào",
+          size: "",
+          ingredients: [
+            { item: "Trà đào Cozy", amount: "100ml" },
+            { item: "Rich", amount: "40ml" },
+            { item: "Đường", amount: "40ml" }
+          ],
+          steps: [
+            "Chia 100ml trà đào thành 2 phần bằng nhau (mỗi phần 50ml).",
+            "Thành phần 1: Cho vào ly 50ml trà đào + 40ml đường, khuấy đều rồi thêm đá.",
+            "Thành phần 2: Khuấy đều 50ml trà đào + 40ml Rich ở ngoài ca đong, sau đó rót nhẹ lên trên ly."
+          ],
+          decor: "3 lát đào lon, thạch đào cắt sợi.",
+          notes: []
+        },
+        {
+          id: "tea-5",
+          category: "Tea",
+          name: "Hồng trà vải Bắc Giang",
+          size: "",
+          ingredients: [
+            { item: "Hồng trà", amount: "70ml" },
+            { item: "Nước lọc", amount: "30ml" },
+            { item: "Mứt vải Boduo", amount: "20ml" },
+            { item: "Syrup vải Torani", amount: "20ml" },
+            { item: "Đường", amount: "10ml" },
+            { item: "Chanh", amount: "10ml" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào bình shaker.",
+            "Thêm đá và lắc đều, đổ ra ly."
+          ],
+          decor: "2 quả vải lon, lát chanh, lá dứa.",
+          notes: []
+        },
+        {
+          id: "tea-6",
+          category: "Tea",
+          name: "Trà trái cây",
+          size: "",
+          ingredients: [
+            { item: "Trà xanh", amount: "100ml" },
+            { item: "Mứt trái cây", amount: "20ml" },
+            { item: "Mứt chanh dây", amount: "10ml" },
+            { item: "Đường", amount: "10ml" },
+            { item: "Tắc", amount: "1 quả" },
+            { item: "Nước trái cây dầm", amount: "1 muỗng" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào bình shaker với đá.",
+            "Lắc đều và rót ra ly, trang trí trái cây tươi."
+          ],
+          decor: "Trái cây dầm, lát chanh, lá dứa.",
+          notes: []
+        },
+
+        // --- VI. YOGURT & SINH TỐ ---
+        {
+          id: "yog-1",
+          category: "Yogurt",
+          name: "Sữa chua đá",
+          size: "",
+          ingredients: [
+            { item: "Sữa chua", amount: "1 hộp" },
+            { item: "Sữa đặc", amount: "20ml" },
+            { item: "Sữa tươi", amount: "30ml" },
+            { item: "Chanh", amount: "15ml" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào bình shaker.",
+            "Thêm đá.",
+            "Lắc đều sau đó cho ra ly."
+          ],
+          decor: "Nha đam, lá dứa, lát chanh.",
+          notes: []
+        },
+        {
+          id: "yog-2",
+          category: "Yogurt",
+          name: "Sữa chua trái cây nhiệt đới",
+          size: "",
+          ingredients: [
+            { item: "Sữa chua", amount: "1 hộp" },
+            { item: "Sữa đặc", amount: "10ml" },
+            { item: "Sữa tươi", amount: "30ml" },
+            { item: "Chanh", amount: "10ml" },
+            { item: "Mứt trái cây", amount: "30ml" }
+          ],
+          steps: [
+            "Lắc đều hỗn hợp với đá trong shaker sau đó cho ra ly."
+          ],
+          decor: "Trái cây các loại (xoài, dâu, dưa hấu...), lá dứa, cam vàng.",
+          notes: []
+        },
+        {
+          id: "yog-3",
+          category: "Yogurt",
+          name: "Sữa chua xoài",
+          size: "",
+          ingredients: [
+            { item: "Sữa chua", amount: "1 hộp" },
+            { item: "Sữa tươi", amount: "30ml" },
+            { item: "Mứt xoài Mama", amount: "30ml" },
+            { item: "Sữa đặc", amount: "10ml" },
+            { item: "Chanh", amount: "10ml" }
+          ],
+          steps: [
+            "Phết 10ml mứt xoài vào thành ly.",
+            "Cho hỗn hợp sữa chua + 20ml mứt xoài, sữa tươi, sữa đặc và chanh vào shaker lắc đều với đá.",
+            "Cho hỗn hợp đã lắc vào ly."
+          ],
+          decor: "Xoài cắt hạt lựu, lá dứa.",
+          notes: []
+        },
+        {
+          id: "yog-4",
+          category: "Yogurt",
+          name: "Sữa chua mít",
+          size: "",
+          ingredients: [
+            { item: "Sữa chua", amount: "1 hộp" },
+            { item: "Sữa đặc", amount: "20ml" },
+            { item: "Sữa tươi", amount: "30ml" },
+            { item: "Mít tươi cắt sợi", amount: "30g" },
+            { item: "Chanh", amount: "15ml" }
+          ],
+          steps: [
+            "Lắc đều hỗn hợp sữa chua, sữa đặc, sữa tươi, chanh với đá sau đó cho vào ly.",
+            "Xếp mít tươi cắt sợi lên trên."
+          ],
+          decor: "Mít tươi cắt sợi (30g), lát chanh, lá dứa.",
+          notes: []
+        },
+        {
+          id: "yog-5",
+          category: "Yogurt",
+          name: "Sữa chua dâu tây",
+          size: "",
+          ingredients: [
+            { item: "Sữa chua", amount: "1 hộp" },
+            { item: "Mứt dâu", amount: "30ml (chia 20ml và 10ml)" },
+            { item: "Sữa đặc", amount: "10ml" },
+            { item: "Sữa tươi", amount: "30ml" },
+            { item: "Chanh", amount: "10ml" }
+          ],
+          steps: [
+            "Cho 10ml mứt dâu phết vào thành ly.",
+            "Lắc đều tất cả hỗn hợp còn lại (bao gồm 20ml mứt dâu) với đá rồi đổ ra ly."
+          ],
+          decor: "Dâu tây cắt lát, lát chanh, lá dứa.",
+          notes: []
+        },
+        {
+          id: "yog-6",
+          category: "Yogurt",
+          name: "Sữa chua chanh dây",
+          size: "",
+          ingredients: [
+            { item: "Sữa chua", amount: "1 hộp" },
+            { item: "Sữa đặc", amount: "10ml" },
+            { item: "Sữa tươi", amount: "30ml" },
+            { item: "Cốt chanh dây", amount: "30ml" }
+          ],
+          steps: [
+            "Cho 10ml sốt/cốt chanh dây vào ly, xoay tạo vết loang.",
+            "Cho hỗn hợp còn lại vào shaker lắc đều với đá rồi rót ra ly."
+          ],
+          decor: "Hạt đác, lá dứa, lát chanh.",
+          notes: []
+        },
+        {
+          id: "yog-7",
+          category: "Yogurt",
+          name: "Sinh tố bơ",
+          size: "",
+          ingredients: [
+            { item: "Bơ tươi", amount: "130 - 150g" },
+            { item: "Sữa tươi", amount: "50ml" },
+            { item: "Sữa đặc", amount: "30ml" },
+            { item: "Đường", amount: "20ml" },
+            { item: "Đá", amount: "2/3 ly" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào cối xay nhuyễn mịn rồi rót ra ly."
+          ],
+          decor: "Dừa khô.",
+          notes: []
+        },
+        {
+          id: "yog-8",
+          category: "Yogurt",
+          name: "Sinh tố dâu",
+          size: "",
+          ingredients: [
+            { item: "Dâu tươi", amount: "2 quả" },
+            { item: "Đường", amount: "20ml" },
+            { item: "Sữa tươi", amount: "50ml" },
+            { item: "Sữa đặc", amount: "20ml" },
+            { item: "Mứt dâu", amount: "30ml" },
+            { item: "Tắc", amount: "2 trái" },
+            { item: "Bột đá xay", amount: "1 muỗng nâu" },
+            { item: "Đá", amount: "2/3 ly" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào cối và xay nhuyễn mịn."
+          ],
+          decor: "Dâu tây, lá dứa, dừa khô.",
+          notes: []
+        },
+        {
+          id: "yog-9",
+          category: "Yogurt",
+          name: "Sinh tố xoài",
+          size: "",
+          ingredients: [
+            { item: "Xoài chín", amount: "1 miếng" },
+            { item: "Sữa tươi", amount: "50ml" },
+            { item: "Sữa đặc", amount: "20ml" },
+            { item: "Đường", amount: "20ml" },
+            { item: "Mứt xoài", amount: "30ml" },
+            { item: "Tắc", amount: "2 quả" },
+            { item: "Bột đá xay", amount: "1 muỗng nâu" },
+            { item: "Đá", amount: "2/3 ly" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào cối và xay nhuyễn mịn."
+          ],
+          decor: "Xoài tươi, lá dứa.",
+          notes: []
+        },
+        {
+          id: "yog-10",
+          category: "Yogurt",
+          name: "Sinh tố mãng cầu",
+          size: "",
+          ingredients: [
+            { item: "Mứt mãng cầu", amount: "50ml" },
+            { item: "Sữa tươi", amount: "50ml" },
+            { item: "Sữa đặc", amount: "20ml" },
+            { item: "Tắc", amount: "2 quả" },
+            { item: "Bột đá xay", amount: "1 muỗng nâu" },
+            { item: "Đá", amount: "2/3 ly" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào cối và xay nhuyễn mịn."
+          ],
+          decor: "Lá dứa, lát chanh.",
+          notes: []
+        },
+
+        // --- VII. NƯỚC ÉP ---
+        {
+          id: "ep-1",
+          category: "Nước ép",
+          name: "Chanh xí muội",
+          size: "",
+          ingredients: [
+            { item: "Ô mai", amount: "1 quả" },
+            { item: "Nước sôi", amount: "30ml" },
+            { item: "Cốt chanh", amount: "20ml" },
+            { item: "Đường", amount: "30ml" },
+            { item: "Mứt tắc Thanh Bình", amount: "20ml" },
+            { item: "Nước lọc", amount: "100ml" }
+          ],
+          steps: [
+            "Dầm 1 trái ô mai với 30ml nước sôi cho ra vị.",
+            "Cho các nguyên liệu còn lại vào bình shaker.",
+            "Thêm đá.",
+            "Lắc đều hỗn hợp sau đó cho ra ly."
+          ],
+          decor: "Nha đam, lát chanh, lá dứa.",
+          notes: [
+            "Với đồ nóng: cho 120ml nước sôi, thêm vào ly lát chanh, ô mai, cam thảo."
+          ]
+        },
+        {
+          id: "ep-2",
+          category: "Nước ép",
+          name: "Ép cóc",
+          size: "",
+          ingredients: [
+            { item: "Nước ép cóc", amount: "200ml" },
+            { item: "Đường", amount: "35ml" },
+            { item: "Mứt tắc Thanh Bình", amount: "20ml" }
+          ],
+          steps: [
+            "Ép lấy 200ml nước cốt cóc tươi.",
+            "Lắc hoặc khuấy đều cùng 35ml đường và 20ml mứt tắc Thanh Bình với đá rồi rót ra ly."
+          ],
+          decor: "Lát cóc / lát chanh, lá dứa.",
+          notes: []
+        },
+
+        // --- VIII. HOT DRINKS ---
+        {
+          id: "hot-1",
+          category: "Hot Drinks",
+          name: "Trà gừng mật ong",
+          size: "Đồ nóng",
+          ingredients: [
+            { item: "Trà Cozy gừng", amount: "2 túi" },
+            { item: "Cam thảo", amount: "2 nhánh" },
+            { item: "Ô mai", amount: "1 viên" },
+            { item: "Gừng tươi", amount: "2 nhánh" },
+            { item: "Chanh lát", amount: "1 lát" },
+            { item: "Cam lát", amount: "1 lát" },
+            { item: "Mật ong", amount: "1 bowl" },
+            { item: "Muối", amount: "1gr" }
+          ],
+          steps: [
+            "Dầm gừng tươi vào ly.",
+            "Cho 2 túi trà Cozy gừng vào ly, thêm nước sôi gần đầy ly để ủ trà."
+          ],
+          decor: "Các nguyên liệu còn lại (cam thảo, ô mai, chanh lát, cam lát) bày vào đĩa riêng; 1 bowl mật ong đi kèm.",
+          notes: []
+        },
+        {
+          id: "hot-2",
+          category: "Hot Drinks",
+          name: "Trà cam quế mật ong",
+          size: "Đồ nóng",
+          ingredients: [
+            { item: "Trà đen", amount: "100ml" },
+            { item: "Nước cam", amount: "50ml" },
+            { item: "Mật ong", amount: "1 bowl" },
+            { item: "Quế thanh", amount: "1 thanh" }
+          ],
+          steps: [
+            "Sục nóng trà đen + quế thanh bằng vòi đánh sữa, sau đó cho ra ly.",
+            "Thêm 50ml nước cam ép vào khuấy nhẹ."
+          ],
+          decor: "Cam khô, thanh quế, đi kèm 1 bowl mật ong.",
+          notes: []
+        },
+
+        // --- IX. SIGNATURE ---
+        {
+          id: "sig-1",
+          category: "Signature",
+          name: "Mè Mè Latte",
+          size: "",
+          ingredients: [
+            { item: "Sốt nướng", amount: "20ml" },
+            { item: "Espresso", amount: "1 ly (30ml)" },
+            { item: "Sữa đặc", amount: "10ml" },
+            { item: "Sữa tươi", amount: "50ml" },
+            { item: "Kem mè đen", amount: "40gr kem sữa + 5gr mè đen" }
+          ],
+          steps: [
+            "Khuấy đều sữa đặc, sốt nướng, 50ml sữa tươi rồi rót nhẹ vào ly.",
+            "Thêm đá vào ly.",
+            "Rót nhẹ 30ml Espresso vào ly.",
+            "Thêm lớp kem mè đen lên trên cùng."
+          ],
+          decor: "Rắc hạt mè lên bề mặt.",
+          notes: []
+        },
+        {
+          id: "sig-2",
+          category: "Signature",
+          name: "Matcha kem mè đen",
+          size: "",
+          ingredients: [
+            { item: "Bột matcha + Nước sôi", amount: "3gr + 30ml nước sôi" },
+            { item: "Sữa tươi", amount: "50ml" },
+            { item: "Sữa đặc", amount: "10ml" },
+            { item: "Đường", amount: "10ml" },
+            { item: "Kem mè đen", amount: "60gr kem sữa + 5gr mè đen" }
+          ],
+          steps: [
+            "Rây bột matcha sau đó khuấy tan với 30ml nước sôi.",
+            "Cho hỗn hợp sữa đặc, Rich (nếu có), đường, sữa tươi vào ly khuấy đều.",
+            "Thêm đá vào ly.",
+            "Rót nhẹ phần nước cốt matcha vào ly.",
+            "Cho phần kem mè đen lên trên cùng."
+          ],
+          decor: "Thành phẩm phân 3 tầng rõ rệt.",
+          notes: []
+        },
+
+        // --- X. MÓN NOEL ---
+        {
+          id: "noel-1",
+          category: "Món Noel",
+          name: "Mint Coffee",
+          size: "",
+          ingredients: [
+            { item: "Mứt dâu", amount: "30ml" },
+            { item: "Sữa tươi", amount: "60ml" },
+            { item: "Sữa đặc", amount: "10ml" },
+            { item: "Bạc hà (Syrup)", amount: "15ml" },
+            { item: "Cà phê", amount: "30ml" }
+          ],
+          steps: [
+            "Cho 30ml mứt dâu vào đáy ly.",
+            "Hòa đều sữa tươi, sữa đặc và syrup bạc hà.",
+            "Thêm đá vào ly rồi đổ phần sữa tươi bạc hà vào.",
+            "Đánh bông cà phê và rót lên mặt ly."
+          ],
+          decor: "Phân tầng Đỏ (dâu) - Xanh bạc hà - Nâu cà phê.",
+          notes: []
+        },
+        {
+          id: "noel-2",
+          category: "Món Noel",
+          name: "Matcha dâu",
+          size: "",
+          ingredients: [
+            { item: "Mứt dâu", amount: "30ml" },
+            { item: "Sữa tươi", amount: "70ml" },
+            { item: "Sữa đặc", amount: "10ml" },
+            { item: "Matcha + Nước sôi", amount: "4g + 30ml" }
+          ],
+          steps: [
+            "Cho 30ml mứt dâu vào đáy ly.",
+            "Thêm đá vào ly.",
+            "Khuấy đều sữa tươi và sữa đặc rồi cho vào ly.",
+            "Khuấy đều bột matcha và nước sôi, sau đó rót nhẹ lên trên ly.",
+            "Xịt kem tươi và rắc bột matcha trang trí."
+          ],
+          decor: "Xịt kem tươi và rắc bột matcha lên trên.",
+          notes: []
+        },
+
+        // --- XI. VẬT TƯ / NGUYÊN LIỆU SƠ CHẾ ---
+        {
+          id: "vt-1",
+          category: "Vật tư",
+          name: "Kem muối (Mẻ lớn)",
+          size: "Sơ chế quầy",
+          ingredients: [
+            { item: "Rich", amount: "1 hộp (450ml)" },
+            { item: "Sữa đặc", amount: "30ml" },
+            { item: "Muối", amount: "5gr" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu vào ca đánh bằng máy đến khi kem đạt độ sệt vừa phải (khi nhấc máy đánh ra thì kem bông dựng chóp nhẹ).",
+            "Thể tích kem sau khi đánh đạt gấp đôi ban đầu."
+          ],
+          decor: "",
+          notes: [
+            "Các dụng cụ và nguyên liệu dùng để đánh kem phải đảm bảo giữ nhiệt độ lạnh."
+          ]
+        },
+        {
+          id: "vt-2",
+          category: "Vật tư",
+          name: "Kem trứng (Mẻ chuẩn)",
+          size: "Sơ chế quầy",
+          ingredients: [
+            { item: "Rich", amount: "100ml" },
+            { item: "Base", amount: "60ml" },
+            { item: "Muối", amount: "3gr" },
+            { item: "Sữa tươi", amount: "100ml" },
+            { item: "Bột kem trứng", amount: "60g" }
+          ],
+          steps: [
+            "Cho tất cả nguyên liệu (Rich, Base, muối, sữa tươi, bột kem trứng) vào ca lạnh.",
+            "Dùng máy đánh kem đánh bông mịn đến khi đạt độ sệt chuẩn."
+          ],
+          decor: "",
+          notes: [
+            "Bảo quản lạnh trong ca đậy kín."
+          ]
+        },
+        {
+          id: "vt-3",
+          category: "Vật tư",
+          name: "Nước đường",
+          size: "Sơ chế quầy",
+          ingredients: [
+            { item: "Nước sôi 100 độ", amount: "700ml" },
+            { item: "Đường cát", amount: "1kg" }
+          ],
+          steps: [
+            "Khuấy đều đường cát với 700ml nước sôi 100 độ đến khi đường tan hoàn toàn.",
+            "Sau khi nước đường nguội hẳn thì rót vào bình pump."
+          ],
+          decor: "",
+          notes: [
+            "Bảo quản ở nhiệt độ thường."
+          ]
+        },
+        {
+          id: "vt-4",
+          category: "Vật tư",
+          name: "Ủ cốt Trà xanh",
+          size: "1200ml",
+          ingredients: [
+            { item: "Nước lọc", amount: "1200ml" },
+            { item: "Trà xanh", amount: "35gr" },
+            { item: "Đá", amount: "200gr" }
+          ],
+          steps: [
+            "Cho nhẹ trà xanh vào nước lọc và đá, khuấy nhẹ.",
+            "Ủ lạnh trà trong vòng 5 - 8 tiếng.",
+            "Sau khi ủ đủ thời gian thì lọc bỏ xác trà."
+          ],
+          decor: "",
+          notes: []
+        },
+        {
+          id: "vt-5",
+          category: "Vật tư",
+          name: "Ủ cốt Trà gạo",
+          size: "1000ml",
+          ingredients: [
+            { item: "Nước sôi", amount: "1000ml" },
+            { item: "Trà gạo", amount: "60gr" }
+          ],
+          steps: [
+            "Cho nhẹ trà gạo vào 1000ml nước sôi, khuấy nhẹ.",
+            "Đậy nắp và ủ trà trong vòng 10 phút.",
+            "Sau khi ủ đủ thời gian thì lọc bỏ xác trà."
+          ],
+          decor: "",
+          notes: []
+        },
+        {
+          id: "vt-6",
+          category: "Vật tư",
+          name: "Ủ cốt Hồng trà",
+          size: "1200ml",
+          ingredients: [
+            { item: "Nước lọc", amount: "1200ml" },
+            { item: "Hồng trà", amount: "70gr" },
+            { item: "Đá", amount: "200g" }
+          ],
+          steps: [
+            "Cho hồng trà vào nước lọc thêm đá, khuấy nhẹ.",
+            "Đậy nắp và ủ trà trong vòng 5 - 8 tiếng, sau đó lọc bỏ xác trà."
+          ],
+          decor: "",
+          notes: []
+        },
+        {
+          id: "vt-7",
+          category: "Vật tư",
+          name: "Cà phê phin đại",
+          size: "Chiết xuất lớn",
+          ingredients: [
+            { item: "Cà phê bột", amount: "200gr (200ml)" },
+            { item: "Nước sôi lần 1", amount: "250ml" },
+            { item: "Nước sôi lần 2", amount: "350ml" }
+          ],
+          steps: [
+            "Dùng cân đong cà phê bột cho vào phin đại, lắc nhẹ làm phẳng mặt cà phê.",
+            "Đổ 250ml nước sôi lần 1 vào phin, xới nhẹ để thấm đều cà phê, sau đó làm phẳng mặt, đặt vỉ gài không bị lệch và nén mạnh.",
+            "Sau 10 phút ủ nở, rót tiếp 350ml nước sôi lần 2 vào.",
+            "Sau khi chiết xuất hết cà phê, dùng rây lọc sang một ca đựng khác."
+          ],
+          decor: "",
+          notes: [
+            "Bảo quản cốt cà phê trong tủ mát khi không sử dụng."
+          ]
+        },
+        {
+          id: "vt-8",
+          category: "Vật tư",
+          name: "Thạch đào",
+          size: "1000ml",
+          ingredients: [
+            { item: "Nước sôi 100 độ", amount: "1000ml" },
+            { item: "Bột rau câu", amount: "1 gói" },
+            { item: "Syrup đào", amount: "50ml" },
+            { item: "Đường cát", amount: "70gr" },
+            { item: "Trà đào Cozy", amount: "150ml" }
+          ],
+          steps: [
+            "Trộn đều đường cát trắng và bột rau câu.",
+            "Cho hỗn hợp vừa trộn vào 1000ml nước sôi khuấy nhanh tay (tránh vón cục).",
+            "Cho tiếp syrup đào và trà đào Cozy vào khuấy đều.",
+            "Đổ ra khuôn để nguội rồi cho vào bảo quản tủ mát."
+          ],
+          decor: "",
+          notes: [
+            "Cách ngâm trà đào Cozy: 9 gói trà túi lọc + 820ml nước sôi."
+          ]
+        },
+        {
+          id: "vt-9",
+          category: "Vật tư",
+          name: "Nấu Trân châu đen",
+          size: "200gr khô",
+          ingredients: [
+            { item: "Trân châu đen", amount: "200gr" },
+            { item: "Nước sôi", amount: "2000ml" },
+            { item: "Thời gian nấu", amount: "30 phút" },
+            { item: "Thời gian ủ", amount: "30 phút" },
+            { item: "Sơ chế sau nấu", amount: "50gr đường + 50ml syrup đường đen" }
+          ],
+          steps: [
+            "Rây sàng lại trân châu đen khô để loại bỏ vụn.",
+            "Nấu nước sôi (lượng nước gấp 10 lần lượng trân châu - 2000ml).",
+            "Khi nước sôi sục, cho trân châu vào khuấy đều.",
+            "Tiếp tục để lửa lớn, cứ 5 phút khuấy đảo 1 lần, nấu trong vòng 30 phút.",
+            "Tắt bếp, đậy kín nắp ủ thêm 30 phút.",
+            "Đổ hết nước, dùng nước ấm rửa sạch nhớt trân châu.",
+            "Trộn liền với 50gr đường và 50ml syrup đường đen để trân châu bóng và không dính nhau."
+          ],
+          decor: "",
+          notes: []
+        },
+        {
+          id: "vt-10",
+          category: "Vật tư",
+          name: "Khúc bạch",
+          size: "Mẻ khuôn",
+          ingredients: [
+            { item: "Sữa tươi", amount: "500ml" },
+            { item: "Phô mai Con Bò Cười", amount: "5 miếng" },
+            { item: "Bột gelatin", amount: "40g" },
+            { item: "Rich + Base", amount: "450ml + 50ml" },
+            { item: "Đường cát", amount: "150g" },
+            { item: "Bột rau câu", amount: "3gr" }
+          ],
+          steps: [
+            "Ngâm 40g bột gelatin với 150ml nước lọc cho nở.",
+            "Cho sữa tươi và 5 miếng phô mai vào cối xay nhuyễn.",
+            "Cho hỗn hợp kem (Rich + Base), đường cát, bột rau câu và gelatin đã ngâm vào nồi đun lửa vừa đến khi hỗn hợp ấm nóng lên, khuấy đều đến khi gelatin tan hết.",
+            "Cho tiếp hỗn hợp sữa phô mai vừa xay vào nồi, hạ nhiệt thấp, khuấy đều rồi tắt bếp.",
+            "Đổ ra khuôn làm nguội ở nhiệt độ thường rồi bảo quản tủ mát."
+          ],
+          decor: "",
+          notes: []
+        },
+        {
+          id: "vt-11",
+          category: "Vật tư",
+          name: "Sốt khoai môn",
+          size: "Sơ chế quầy",
+          ingredients: [
+            { item: "Khoai dẻo", amount: "70g" },
+            { item: "Khoai môn", amount: "38g" },
+            { item: "Sữa tươi", amount: "100ml" },
+            { item: "Rich", amount: "150ml" },
+            { item: "Bột khoai môn", amount: "4 muỗng" },
+            { item: "Sữa đặc", amount: "25ml" }
+          ],
+          steps: [
+            "Cắt khoai môn và khoai dẻo thành lát nhỏ.",
+            "Hấp chín trong 30 phút với 1 lít nước.",
+            "Cho khoai đã chín vào máy xay cùng sữa tươi, Rich, bột khoai môn, sữa đặc và xay nhuyễn."
+          ],
+          decor: "",
+          notes: [
+            "Đảm bảo thành phẩm sốt ở dạng hơi lỏng để dễ tạo vân. Bảo quản tủ lạnh."
+          ]
+        },
+        {
+          id: "vt-12",
+          category: "Vật tư",
+          name: "Sốt chanh dây",
+          size: "3kg chanh",
+          ingredients: [
+            { item: "Chanh dây", amount: "3kg" },
+            { item: "Đường", amount: "500g" },
+            { item: "Nước nấu thêm", amount: "500g" }
+          ],
+          steps: [
+            "Cắt chanh dây và lọc lấy nước cốt, để lại phần hạt.",
+            "Cho phần hạt đã lọc vào máy xay và thêm nước với tỉ lệ 2 hạt chanh dây : 1 nước, xay lên.",
+            "Cho phần đã xay vào máy ép để ép lấy nước cốt.",
+            "Cho toàn bộ nước cốt vào nồi nấu lên ở mức 1000 độ, thêm 500g đường và 500g nước.",
+            "Nấu sôi trong 15 phút, sau đó hạ bếp xuống 500 độ nấu tiếp trong vòng 30 phút."
+          ],
+          decor: "",
+          notes: []
+        },
+        {
+          id: "vt-13",
+          category: "Vật tư",
+          name: "Hạt đác rim",
+          size: "1 bì",
+          ingredients: [
+            { item: "Hạt đác", amount: "1 bì" },
+            { item: "Nước sôi", amount: "300ml" },
+            { item: "Đường cát", amount: "100g" },
+            { item: "Đường đen", amount: "3 muỗng" },
+            { item: "Thơm (Dứa)", amount: "2 miếng" }
+          ],
+          steps: [
+            "Cho hạt đác vào nồi trụng qua 300ml nước sôi rồi lọc ráo.",
+            "Cho 2 miếng thơm cắt lát nhỏ vào cùng hạt đác.",
+            "Thêm đường cát và đường đen vào đảo đều, ủ trong 5 phút.",
+            "Bật bếp nấu ở nhiệt độ 800 độ đến khi nước đường sệt lại thì hạ bếp, để nguội và cất tủ lạnh."
+          ],
+          decor: "",
+          notes: [
+            "Nếm thử trong quá trình nấu để kiểm tra độ mềm của hạt đát."
+          ]
+        },
+        {
+          id: "vt-14",
+          category: "Vật tư",
+          name: "Nấu cốt Trà sữa",
+          size: "2.4 lít",
+          ingredients: [
+            { item: "Nước sôi", amount: "2 lít 4 (2400ml)" },
+            { item: "Hồng trà", amount: "140g" },
+            { item: "Sữa đặc", amount: "150ml" },
+            { item: "Bột sữa", amount: "450g" }
+          ],
+          steps: [
+            "Ủ 140g hồng trà với 2 lít 4 nước sôi trong 12 phút.",
+            "Lọc bỏ xác trà và thêm 2 súc đá vào cốt trà.",
+            "Đặt lên bếp nấu sôi ở mức 1000 độ.",
+            "Thêm 450g bột kem sữa và 150ml sữa đặc vào khuấy đều.",
+            "Chờ hỗn hợp hòa tan hết thì tắt bếp."
+          ],
+          decor: "",
+          notes: []
+        },
+        {
+          id: "vt-15",
+          category: "Vật tư",
+          name: "Sốt sả",
+          size: "150ml",
+          ingredients: [
+            { item: "Sả tươi", amount: "50g" },
+            { item: "Nước lọc", amount: "150ml" }
+          ],
+          steps: [
+            "Sả cắt nhỏ cho vào máy xay cùng 150ml nước lọc.",
+            "Xay nhuyễn mịn.",
+            "Dùng rây/vải lọc để lọc lấy phần nước cốt sả."
+          ],
+          decor: "",
+          notes: [
+            "Bảo quản trong tủ lạnh, chia đủ dùng theo ca."
+          ]
+        }
+      ];
+
+      // =====================================================================
+      // 2. CẤU HÌNH DANH MỤC & ICON SVG NỘI BỘ (KHÔNG PHỤ THUỘC CDN)
+      // =====================================================================
+      const CATEGORIES = [
+        { id: "Tất cả", label: "Tất cả", themeClass: "cat-theme-coffee-pm", svg: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/>' },
+        { id: "Cà phê truyền thống", label: "Cà phê truyền thống", themeClass: "cat-theme-coffee-tt", svg: '<path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>' },
+        { id: "Cà phê pha máy", label: "Cà phê pha máy", themeClass: "cat-theme-coffee-pm", svg: '<path d="M6 2h12"/><path d="M8 2v4"/><path d="M16 2v4"/><rect x="4" y="6" width="16" height="5" rx="1"/><path d="M7 11v4a5 5 0 0 0 10 0v-4"/><path d="M5 21h14"/>' },
+        { id: "Trà sữa", label: "Trà sữa", themeClass: "cat-theme-trasua", svg: '<path d="M8 2h8l-1 18a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2L8 2Z"/><path d="M6 6h12"/><path d="M12 2v4"/>' },
+        { id: "Matcha & Chocolate", label: "Matcha & Chocolate", themeClass: "cat-theme-matcha", svg: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>' },
+        { id: "Tea", label: "Tea (Trà trái cây)", themeClass: "cat-theme-tea", svg: '<path d="M8 22h8"/><path d="M12 11v11"/><path d="m19 3-7 8-7-8Z"/>' },
+        { id: "Yogurt", label: "Yogurt & Sinh tố", themeClass: "cat-theme-yogurt", svg: '<path d="M12 17c5 0 8-2.69 8-6H4c0 3.31 3 6 8 6Z"/><path d="m7 17 5 5 5-5"/><path d="M8 11a4 4 0 0 1 8 0"/>' },
+        { id: "Nước ép", label: "Nước ép", themeClass: "cat-theme-nuocep", svg: '<circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M3 12h18"/><path d="m5.6 5.6 12.8 12.8"/>' },
+        { id: "Hot Drinks", label: "Hot Drinks", themeClass: "cat-theme-hot", svg: '<path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>' },
+        { id: "Signature", label: "Signature", themeClass: "cat-theme-signature", svg: '<path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/>' },
+        { id: "Món Noel", label: "Món Noel", themeClass: "cat-theme-noel", svg: '<line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/><path d="m20 16-4-4 4-4"/><path d="m4 8 4 4-4 4"/><path d="m16 4-4 4-4-4"/><path d="m8 20 4-4 4 4"/>' },
+        { id: "Vật tư", label: "Vật tư / Sơ chế", themeClass: "cat-theme-vattu", svg: '<path d="M9 3h6"/><path d="M10 3v6.5L5 18a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-8.5V3"/>' }
+      ];
+
+      const STORAGE_KEYS = {
+        FAVORITES: "me_coffee_favorites_v1",
+        CATEGORY: "me_coffee_active_cat_v1",
+        ONLY_FAV: "me_coffee_only_fav_v1",
+        FOCUS_MODE: "me_coffee_focus_mode_v1"
+      };
+
+      // =====================================================================
+      // 3. TIỆN ÍCH CHUẨN HÓA & INDEX DỮ LIỆU TÌM KIẾM
+      // =====================================================================
+      function removeVietnameseTones(str) {
+        if (!str) return "";
+        return String(str)
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/đ/g, "d")
+          .replace(/Đ/g, "D")
+          .toLowerCase()
+          .trim();
+      }
+
+      function escapeHtml(str) {
+        if (str === null || str === undefined) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      // Tiền xử lý dữ liệu công thức để tìm kiếm tức thì (< 1ms)
+      const RECIPE_MAP = new Map();
+      const CATEGORY_COUNTS = { "Tất cả": RECIPES_DATA.length };
+
+      const INDEXED_RECIPES = RECIPES_DATA.map((raw) => {
+        const ingredients = Array.isArray(raw.ingredients) ? raw.ingredients : [];
+        const steps = Array.isArray(raw.steps) ? raw.steps : [];
+        const notes = Array.isArray(raw.notes) ? raw.notes : [];
+        const decor = raw.decor ? String(raw.decor) : "";
+        const size = raw.size ? String(raw.size) : "";
+        const category = raw.category || "Khác";
+        const name = raw.name || "Chưa đặt tên";
+
+        CATEGORY_COUNTS[category] = (CATEGORY_COUNTS[category] || 0) + 1;
+
+        const ingText = ingredients.map((i) => `${i.item || ""} ${i.amount || ""}`).join(" ");
+        const searchableRaw = `${name} ${category} ${size} ${ingText} ${decor} ${notes.join(" ")}`.toLowerCase();
+        const searchableNoTone = removeVietnameseTones(searchableRaw);
+        const nameNoTone = removeVietnameseTones(name);
+
+        const normalized = {
+          id: raw.id,
+          category,
+          name,
+          size,
+          ingredients,
+          steps,
+          decor,
+          notes,
+          searchableRaw,
+          searchableNoTone,
+          nameNoTone
+        };
+
+        RECIPE_MAP.set(normalized.id, normalized);
+        return normalized;
+      });
+
+      const CATEGORY_META_MAP = new Map(CATEGORIES.map((c) => [c.id, c]));
+      function getCategoryMeta(catId) {
+        return CATEGORY_META_MAP.get(catId) || CATEGORIES[0];
+      }
+
+      // =====================================================================
+      // 4. QUẢN LÝ TRẠNG THÁI & LOCALSTORAGE AN TOÀN
+      // =====================================================================
+      function loadStorageJSON(key, fallback) {
+        try {
+          const val = localStorage.getItem(key);
+          return val ? JSON.parse(val) : fallback;
+        } catch (e) {
+          return fallback;
+        }
+      }
+
+      function saveStorage(key, value) {
+        try {
+          localStorage.setItem(key, typeof value === "string" ? value : JSON.stringify(value));
+        } catch (e) {
+          // Bỏ qua nếu trình duyệt chặn storage ở chế độ ẩn danh nghiêm ngặt
+        }
+      }
+
+      const savedFavs = loadStorageJSON(STORAGE_KEYS.FAVORITES, []);
+      const validSavedFavs = Array.isArray(savedFavs) ? savedFavs.filter((id) => RECIPE_MAP.has(id)) : [];
+
+      const savedCat = (() => {
+        try {
+          const c = localStorage.getItem(STORAGE_KEYS.CATEGORY);
+          return c && CATEGORY_META_MAP.has(c) ? c : "Tất cả";
+        } catch (e) {
+          return "Tất cả";
+        }
+      })();
+
+      const state = {
+        activeCategory: savedCat,
+        searchQuery: "",
+        onlyFavorites: loadStorageJSON(STORAGE_KEYS.ONLY_FAV, false) === true,
+        favorites: new Set(validSavedFavs),
+        currentModalId: null,
+        isFocusMode: loadStorageJSON(STORAGE_KEYS.FOCUS_MODE, false) === true,
+        completedSteps: new Set(),
+        lastFocusedElement: null
+      };
+
+      // =====================================================================
+      // 5. DOM REFERENCES
+      // =====================================================================
+      const dom = {
+        recipeCountText: document.getElementById("recipeCountText"),
+        favFilterBtn: document.getElementById("favFilterBtn"),
+        favFilterIcon: document.getElementById("favFilterIcon"),
+        favCountText: document.getElementById("favCountText"),
+        resetFilterBtn: document.getElementById("resetFilterBtn"),
+        searchInput: document.getElementById("searchInput"),
+        clearSearchBtn: document.getElementById("clearSearchBtn"),
+        categoryTabs: document.getElementById("categoryTabs"),
+        emptyState: document.getElementById("emptyState"),
+        emptyResetBtn: document.getElementById("emptyResetBtn"),
+        recipeGrid: document.getElementById("recipeGrid"),
+        // Modal
+        recipeModal: document.getElementById("recipeModal"),
+        modalBackdrop: document.getElementById("modalBackdrop"),
+        modalPanel: document.getElementById("modalPanel"),
+        modalCategoryBadge: document.getElementById("modalCategoryBadge"),
+        modalSizeBadge: document.getElementById("modalSizeBadge"),
+        modalTitle: document.getElementById("modalTitle"),
+        modalFavBtn: document.getElementById("modalFavBtn"),
+        modalFavIcon: document.getElementById("modalFavIcon"),
+        focusModeBtn: document.getElementById("focusModeBtn"),
+        copyBtn: document.getElementById("copyBtn"),
+        modalCloseTopBtn: document.getElementById("modalCloseTopBtn"),
+        modalCloseBottomBtn: document.getElementById("modalCloseBottomBtn"),
+        modalBodyScroll: document.getElementById("modalBodyScroll"),
+        modalIngCount: document.getElementById("modalIngCount"),
+        modalIngredientsBody: document.getElementById("modalIngredientsBody"),
+        modalStepsList: document.getElementById("modalStepsList"),
+        modalExtrasGrid: document.getElementById("modalExtrasGrid"),
+        modalDecorBox: document.getElementById("modalDecorBox"),
+        modalDecorText: document.getElementById("modalDecorText"),
+        modalNotesBox: document.getElementById("modalNotesBox"),
+        modalNotesList: document.getElementById("modalNotesList"),
+        copyToast: document.getElementById("copyToast")
+      };
+
+      // =====================================================================
+      // 6. RENDER GIAO DIỆN (TỐI ƯU DOM)
+      // =====================================================================
+      function renderStarSvg(isFilled) {
+        return `<svg class="icon ${isFilled ? "icon-filled" : ""}" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+      }
+
+      function updateFavoriteControls() {
+        dom.favCountText.textContent = String(state.favorites.size);
+        dom.favFilterBtn.classList.toggle("is-active", state.onlyFavorites);
+        dom.favFilterBtn.setAttribute("aria-pressed", String(state.onlyFavorites));
+        if (state.onlyFavorites) {
+          dom.favFilterIcon.classList.add("icon-filled");
+        } else {
+          dom.favFilterIcon.classList.remove("icon-filled");
+        }
+      }
+
+      function renderCategoryTabs() {
+        dom.categoryTabs.innerHTML = CATEGORIES.map((cat) => {
+          const count = CATEGORY_COUNTS[cat.id] || 0;
+          const isActive = state.activeCategory === cat.id;
+
+          return `
+            <button
+              type="button"
+              role="tab"
+              aria-selected="${isActive}"
+              data-category="${escapeHtml(cat.id)}"
+              class="cat-btn ${isActive ? "is-active" : ""}"
+            >
+              <svg class="icon cat-icon" viewBox="0 0 24 24">${cat.svg}</svg>
+              <span>${escapeHtml(cat.label)}</span>
+              <span class="cat-count">${count}</span>
+            </button>
+          `;
+        }).join("");
+      }
+
+      function renderRecipes() {
+        const queryRaw = state.searchQuery.toLowerCase().trim();
+        const queryNoTone = removeVietnameseTones(state.searchQuery);
+
+        let filtered = INDEXED_RECIPES.filter((recipe) => {
+          if (state.onlyFavorites && !state.favorites.has(recipe.id)) {
+            return false;
+          }
+          if (state.activeCategory !== "Tất cả" && recipe.category !== state.activeCategory) {
+            return false;
+          }
+          if (!queryNoTone) return true;
+          return recipe.searchableRaw.includes(queryRaw) || recipe.searchableNoTone.includes(queryNoTone);
+        });
+
+        // Ưu tiên kết quả khớp trực tiếp tên món lên đầu
+        if (queryNoTone) {
+          filtered.sort((a, b) => {
+            const aExact = a.nameNoTone.startsWith(queryNoTone) ? 2 : (a.nameNoTone.includes(queryNoTone) ? 1 : 0);
+            const bExact = b.nameNoTone.startsWith(queryNoTone) ? 2 : (b.nameNoTone.includes(queryNoTone) ? 1 : 0);
+            return bExact - aExact;
+          });
+        }
+
+        dom.recipeCountText.textContent = `${filtered.length} / ${RECIPES_DATA.length} công thức`;
+
+        const hasActiveFilter = state.activeCategory !== "Tất cả" || queryNoTone !== "" || state.onlyFavorites;
+        dom.resetFilterBtn.classList.toggle("hidden", !hasActiveFilter);
+
+        if (filtered.length === 0) {
+          dom.recipeGrid.innerHTML = "";
+          dom.emptyState.classList.remove("hidden");
+          return;
+        }
+
+        dom.emptyState.classList.add("hidden");
+
+        dom.recipeGrid.innerHTML = filtered.map((recipe) => {
+          const catMeta = getCategoryMeta(recipe.category);
+          const isFav = state.favorites.has(recipe.id);
+          const previewIngs = recipe.ingredients.slice(0, 3);
+          const remainingCount = recipe.ingredients.length - previewIngs.length;
+
+          return `
+            <article
+              class="recipe-card"
+              data-recipe-id="${escapeHtml(recipe.id)}"
+              tabindex="0"
+              role="button"
+              aria-label="Xem công thức ${escapeHtml(recipe.name)}"
+            >
+              <div>
+                <div class="card-top">
+                  <div class="card-badges">
+                    <span class="badge-cat ${catMeta.themeClass}">
+                      <svg class="icon" viewBox="0 0 24 24">${catMeta.svg}</svg>
+                      <span>${escapeHtml(recipe.category)}</span>
+                    </span>
+                    ${recipe.size ? `<span class="badge-size">${escapeHtml(recipe.size)}</span>` : ""}
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn-card-fav ${isFav ? "is-fav" : ""}"
+                    data-fav-id="${escapeHtml(recipe.id)}"
+                    aria-label="${isFav ? "Bỏ yêu thích" : "Thêm vào yêu thích"} ${escapeHtml(recipe.name)}"
+                    aria-pressed="${isFav}"
+                    title="${isFav ? "Bỏ yêu thích" : "Ghim món yêu thích"}"
+                  >
+                    ${renderStarSvg(isFav)}
+                  </button>
+                </div>
+
+                <h2 class="card-title">${escapeHtml(recipe.name)}</h2>
+
+                <div class="card-ing-list">
+                  ${previewIngs.map((ing) => `
+                    <div class="card-ing-row">
+                      <span class="card-ing-name">${escapeHtml(ing.item)}</span>
+                      <span class="card-ing-amount">${escapeHtml(ing.amount)}</span>
+                    </div>
+                  `).join("")}
+                  ${remainingCount > 0 ? `
+                    <p class="card-ing-more">+ ${remainingCount} nguyên liệu khác...</p>
+                  ` : ""}
+                </div>
+              </div>
+
+              <div class="card-footer">
+                <span class="card-meta-count">
+                  <svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  ${recipe.ingredients.length} thành phần
+                </span>
+                <span class="card-cta">
+                  Chi tiết
+                  <svg class="icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      // =====================================================================
+      // 7. XỬ LÝ MODAL CHI TIẾT, CHẾ ĐỘ TẬP TRUNG & SAO CHÉP
+      // =====================================================================
+      function syncModalFavoriteBtn() {
+        if (!state.currentModalId) return;
+        const isFav = state.favorites.has(state.currentModalId);
+        dom.modalFavBtn.classList.toggle("is-fav", isFav);
+        dom.modalFavBtn.setAttribute("aria-pressed", String(isFav));
+        dom.modalFavBtn.innerHTML = renderStarSvg(isFav);
+      }
+
+      function applyFocusModeUI() {
+        dom.modalPanel.classList.toggle("is-focus-mode", state.isFocusMode);
+        dom.focusModeBtn.classList.toggle("is-active", state.isFocusMode);
+        dom.focusModeBtn.setAttribute("aria-pressed", String(state.isFocusMode));
+      }
+
+      function renderModalSteps(recipe) {
+        dom.modalStepsList.innerHTML = recipe.steps.map((step, idx) => {
+          const isDone = state.completedSteps.has(idx);
+          return `
+            <li class="step-item ${isDone ? "is-done" : ""}" data-step-index="${idx}" role="checkbox" aria-checked="${isDone}" tabindex="0">
+              <span class="step-num">${isDone ? "✓" : idx + 1}</span>
+              <span class="step-text">${escapeHtml(step)}</span>
+            </li>
+          `;
+        }).join("");
+      }
+
+      function openModal(recipeId) {
+        const recipe = RECIPE_MAP.get(recipeId);
+        if (!recipe) return;
+
+        state.lastFocusedElement = document.activeElement;
+        state.currentModalId = recipe.id;
+        state.completedSteps.clear();
+
+        const catMeta = getCategoryMeta(recipe.category);
+
+        dom.modalCategoryBadge.className = `badge-cat ${catMeta.themeClass}`;
+        dom.modalCategoryBadge.innerHTML = `<svg class="icon" viewBox="0 0 24 24">${catMeta.svg}</svg><span>${escapeHtml(recipe.category)}</span>`;
+
+        if (recipe.size) {
+          dom.modalSizeBadge.textContent = recipe.size;
+          dom.modalSizeBadge.classList.remove("hidden");
+        } else {
+          dom.modalSizeBadge.classList.add("hidden");
+        }
+
+        dom.modalTitle.textContent = recipe.name;
+        syncModalFavoriteBtn();
+        applyFocusModeUI();
+
+        // Bảng nguyên liệu
+        dom.modalIngCount.textContent = `${recipe.ingredients.length} nguyên liệu`;
+        dom.modalIngredientsBody.innerHTML = recipe.ingredients.map((ing) => `
+          <tr>
+            <td class="ing-col-name">${escapeHtml(ing.item)}</td>
+            <td class="ing-col-amount">${escapeHtml(ing.amount)}</td>
+          </tr>
+        `).join("");
+
+        // Các bước thực hiện
+        renderModalSteps(recipe);
+
+        // Decor & Lưu ý
+        const hasDecor = recipe.decor.trim() !== "";
+        const hasNotes = recipe.notes.length > 0;
+
+        if (hasDecor) {
+          dom.modalDecorText.textContent = recipe.decor;
+          dom.modalDecorBox.classList.remove("hidden");
+        } else {
+          dom.modalDecorBox.classList.add("hidden");
+        }
+
+        if (hasNotes) {
+          dom.modalNotesList.innerHTML = recipe.notes.map((n) => `<li>${escapeHtml(n)}</li>`).join("");
+          dom.modalNotesBox.classList.remove("hidden");
+        } else {
+          dom.modalNotesBox.classList.add("hidden");
+        }
+
+        dom.modalExtrasGrid.classList.remove("hidden", "has-two");
+        if (hasDecor && hasNotes) {
+          dom.modalExtrasGrid.classList.add("has-two");
+        } else if (!hasDecor && !hasNotes) {
+          dom.modalExtrasGrid.classList.add("hidden");
+        }
+
+        dom.copyToast.classList.remove("is-visible");
+        dom.recipeModal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
+        dom.modalBodyScroll.scrollTop = 0;
+        dom.modalCloseTopBtn.focus();
+      }
+
+      function closeModal() {
+        if (dom.recipeModal.classList.contains("hidden")) return;
+        dom.recipeModal.classList.add("hidden");
+        document.body.style.overflow = "";
+        state.currentModalId = null;
+        state.completedSteps.clear();
+
+        if (state.lastFocusedElement && typeof state.lastFocusedElement.focus === "function") {
+          state.lastFocusedElement.focus();
+        }
+      }
+
+      function toggleFocusMode() {
+        state.isFocusMode = !state.isFocusMode;
+        saveStorage(STORAGE_KEYS.FOCUS_MODE, state.isFocusMode);
+        applyFocusModeUI();
+      }
+
+      function toggleFavorite(recipeId) {
+        if (!RECIPE_MAP.has(recipeId)) return;
+        if (state.favorites.has(recipeId)) {
+          state.favorites.delete(recipeId);
+        } else {
+          state.favorites.add(recipeId);
+        }
+        saveStorage(STORAGE_KEYS.FAVORITES, Array.from(state.favorites));
+        updateFavoriteControls();
+        syncModalFavoriteBtn();
+        renderRecipes();
+      }
+
+      function showCopySuccess() {
+        dom.copyToast.classList.add("is-visible");
+        clearTimeout(showCopySuccess._timer);
+        showCopySuccess._timer = setTimeout(() => {
+          dom.copyToast.classList.remove("is-visible");
+        }, 2500);
+      }
+
+      function copyRecipeText() {
+        if (!state.currentModalId) return;
+        const r = RECIPE_MAP.get(state.currentModalId);
+        if (!r) return;
+
+        const lines = [
+          `${r.name.toUpperCase()} (${r.category}${r.size ? " - " + r.size : ""})`,
+          "",
+          "NGUYÊN LIỆU & ĐỊNH LƯỢNG:",
+          ...r.ingredients.map((i) => `- ${i.item}: ${i.amount}`),
+          "",
+          "CÁCH LÀM:",
+          ...r.steps.map((s, idx) => `${idx + 1}. ${s}`)
+        ];
+        if (r.decor) {
+          lines.push("", `DECOR: ${r.decor}`);
+        }
+        if (r.notes.length > 0) {
+          lines.push("", "LƯU Ý:");
+          r.notes.forEach((n) => lines.push(`- ${n}`));
+        }
+
+        const textToCopy = lines.join("\n");
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(textToCopy).then(showCopySuccess).catch(() => fallbackCopy(textToCopy));
+        } else {
+          fallbackCopy(textToCopy);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const tempTextArea = document.createElement("textarea");
+        tempTextArea.value = text;
+        tempTextArea.style.position = "fixed";
+        tempTextArea.style.left = "-9999px";
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        try {
+          document.execCommand("copy");
+          showCopySuccess();
+        } catch (err) {
+          // Bỏ qua nếu môi trường không cho phép copy
+        } finally {
+          document.body.removeChild(tempTextArea);
+        }
+      }
+
+      // =====================================================================
+      // 8. THIẾT LẬP SỰ KIỆN (EVENT DELEGATION & KEYBOARD)
+      // =====================================================================
+      function selectCategory(categoryId) {
+        state.activeCategory = categoryId;
+        saveStorage(STORAGE_KEYS.CATEGORY, categoryId);
+        renderCategoryTabs();
+        renderRecipes();
+      }
+
+      function clearSearch() {
+        dom.searchInput.value = "";
+        state.searchQuery = "";
+        dom.clearSearchBtn.classList.add("hidden");
+        renderRecipes();
+        dom.searchInput.focus();
+      }
+
+      function resetAllFilters() {
+        state.activeCategory = "Tất cả";
+        state.searchQuery = "";
+        state.onlyFavorites = false;
+        saveStorage(STORAGE_KEYS.CATEGORY, "Tất cả");
+        saveStorage(STORAGE_KEYS.ONLY_FAV, false);
+        dom.searchInput.value = "";
+        dom.clearSearchBtn.classList.add("hidden");
+        updateFavoriteControls();
+        renderCategoryTabs();
+        renderRecipes();
+      }
+
+      function initEvents() {
+        // Tìm kiếm tức thì
+        dom.searchInput.addEventListener("input", (e) => {
+          state.searchQuery = e.target.value;
+          dom.clearSearchBtn.classList.toggle("hidden", state.searchQuery.length === 0);
+          renderRecipes();
+        });
+
+        dom.clearSearchBtn.addEventListener("click", clearSearch);
+        dom.resetFilterBtn.addEventListener("click", resetAllFilters);
+        dom.emptyResetBtn.addEventListener("click", resetAllFilters);
+
+        // Lọc yêu thích
+        dom.favFilterBtn.addEventListener("click", () => {
+          state.onlyFavorites = !state.onlyFavorites;
+          saveStorage(STORAGE_KEYS.ONLY_FAV, state.onlyFavorites);
+          updateFavoriteControls();
+          renderRecipes();
+        });
+
+        // Event Delegation cho thanh danh mục & nút cuộn trên mobile
+        const catLeftBtn = document.getElementById("catScrollLeftBtn");
+        const catRightBtn = document.getElementById("catScrollRightBtn");
+        if (catLeftBtn && catRightBtn) {
+          catLeftBtn.addEventListener("click", () => {
+            dom.categoryTabs.scrollBy({ left: -220, behavior: "smooth" });
+          });
+          catRightBtn.addEventListener("click", () => {
+            dom.categoryTabs.scrollBy({ left: 220, behavior: "smooth" });
+          });
+        }
+
+        dom.categoryTabs.addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-category]");
+          if (btn) {
+            selectCategory(btn.getAttribute("data-category"));
+          }
+        });
+
+        // Event Delegation cho lưới thẻ công thức
+        dom.recipeGrid.addEventListener("click", (e) => {
+          const favBtn = e.target.closest("[data-fav-id]");
+          if (favBtn) {
+            e.stopPropagation();
+            toggleFavorite(favBtn.getAttribute("data-fav-id"));
+            return;
+          }
+          const card = e.target.closest("[data-recipe-id]");
+          if (card) {
+            openModal(card.getAttribute("data-recipe-id"));
+          }
+        });
+
+        // Hỗ trợ bàn phím Enter / Space trên thẻ công thức
+        dom.recipeGrid.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            const card = e.target.closest("[data-recipe-id]");
+            if (card && !e.target.closest("[data-fav-id]")) {
+              e.preventDefault();
+              openModal(card.getAttribute("data-recipe-id"));
+            }
+          }
+        });
+
+        // Sự kiện trong Modal
+        dom.modalBackdrop.addEventListener("click", closeModal);
+        dom.modalCloseTopBtn.addEventListener("click", closeModal);
+        dom.modalCloseBottomBtn.addEventListener("click", closeModal);
+        dom.copyBtn.addEventListener("click", copyRecipeText);
+        dom.focusModeBtn.addEventListener("click", toggleFocusMode);
+        dom.modalFavBtn.addEventListener("click", () => {
+          if (state.currentModalId) toggleFavorite(state.currentModalId);
+        });
+
+        // Event Delegation đánh dấu hoàn thành từng bước pha chế
+        function handleStepToggle(target) {
+          const stepEl = target.closest("[data-step-index]");
+          if (!stepEl || !state.currentModalId) return;
+          const idx = Number(stepEl.getAttribute("data-step-index"));
+          if (state.completedSteps.has(idx)) {
+            state.completedSteps.delete(idx);
+          } else {
+            state.completedSteps.add(idx);
+          }
+          const recipe = RECIPE_MAP.get(state.currentModalId);
+          if (recipe) renderModalSteps(recipe);
+        }
+
+        dom.modalStepsList.addEventListener("click", (e) => handleStepToggle(e.target));
+        dom.modalStepsList.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            handleStepToggle(e.target);
+          }
+        });
+
+        // Phím tắt toàn cục cho Barista & Laptop
+        document.addEventListener("keydown", (e) => {
+          const isModalOpen = !dom.recipeModal.classList.contains("hidden");
+          const isTyping = document.activeElement === dom.searchInput;
+
+          if (e.key === "Escape") {
+            if (isModalOpen) {
+              e.preventDefault();
+              closeModal();
+            } else if (isTyping && state.searchQuery) {
+              e.preventDefault();
+              clearSearch();
+            }
+            return;
+          }
+
+          if (e.key === "/" && !isModalOpen && !isTyping) {
+            e.preventDefault();
+            dom.searchInput.focus();
+            dom.searchInput.select();
+            return;
+          }
+
+          if ((e.key === "f" || e.key === "F") && isModalOpen && !isTyping) {
+            e.preventDefault();
+            toggleFocusMode();
+          }
+        });
+      }
+
+      // =====================================================================
+      // 9. KHỞI CHẠY ỨNG DỤNG
+      // =====================================================================
+      updateFavoriteControls();
+      renderCategoryTabs();
+      renderRecipes();
+      initEvents();
+    })();
+  </script>
+</body>
+</html>
